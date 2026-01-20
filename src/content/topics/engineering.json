@@ -1,0 +1,10 @@
+{
+  "id": "engineering",
+  "name": "Engineering",
+  "description": "Software architecture, system design, best practices, and building scalable systems.",
+  "slug": "engineering",
+  "seoTitle": "Engineering - Lab",
+  "seoDescription": "Deep dives into software architecture, system design principles, and engineering best practices.",
+  "icon": "code",
+  "color": "#10b981"
+}

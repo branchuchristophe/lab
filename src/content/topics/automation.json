@@ -1,0 +1,10 @@
+{
+  "id": "automation",
+  "name": "Automation",
+  "description": "Scripts, workflows, CI/CD, and automating repetitive tasks.",
+  "slug": "automation",
+  "seoTitle": "Automation - Lab",
+  "seoDescription": "Practical guides for automating workflows, building scripts, and streamlining development processes.",
+  "icon": "gear",
+  "color": "#3b82f6"
+}

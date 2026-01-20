@@ -1,0 +1,10 @@
+{
+  "id": "personal",
+  "name": "Personal",
+  "description": "Thoughts, reflections, productivity systems, and personal development.",
+  "slug": "personal",
+  "seoTitle": "Personal - Lab",
+  "seoDescription": "Personal reflections on productivity, learning, and building systems for personal growth.",
+  "icon": "user",
+  "color": "#f59e0b"
+}
