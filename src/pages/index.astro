@@ -58,6 +58,26 @@ const iconMap: Record<string, string> = {
       </div>
     </section>
 
+    <!-- Topic navigation -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-6">Explore by Topic</h2>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        {sortedTopics.map((topic) => (
+          <a
+            href={`/topics/${topic.data.slug}`}
+            class="group border border-neutral-800 rounded-lg p-4 hover:border-primary-500/40 hover:bg-primary-500/5 transition-all text-center"
+          >
+            <div class="text-3xl mb-2" role="img" aria-label={topic.data.name}>
+              {topic.data.icon ? iconMap[topic.data.icon] || '📝' : '📝'}
+            </div>
+            <div class="text-sm font-medium text-neutral-300 group-hover:text-primary-500 transition-colors">
+              {topic.data.name}
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
     <!-- Featured articles -->
     {featuredArticles.length > 0 && (
       <section class="mb-16">
