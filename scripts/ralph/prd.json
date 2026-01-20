@@ -160,7 +160,7 @@
         "npm run typecheck passes"
       ],
       "priority": 10,
-      "passes": false,
+      "passes": true,
       "blockedBy": ["LAB-006", "LAB-009"],
       "notes": "Homepage completion"
     }
