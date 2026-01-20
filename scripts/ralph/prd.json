@@ -143,7 +143,7 @@
         "npm run build passes"
       ],
       "priority": 9,
-      "passes": false,
+      "passes": true,
       "blockedBy": ["LAB-006"],
       "notes": "Topic organization"
     },
