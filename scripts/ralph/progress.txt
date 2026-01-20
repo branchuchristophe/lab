@@ -30,3 +30,20 @@ Started: 2026-01-20
 
 ---
 
+## 2026-01-20 - LAB-001
+- Implemented basic Astro page structure
+- Files changed:
+  - Created src/layouts/BaseLayout.astro with header, nav, footer
+  - Created src/components/SEOHead.astro with full SEO metadata
+  - Created src/layouts/ArticleLayout.astro extending BaseLayout
+  - Created src/pages/index.astro with hero and recent articles
+  - Added @tailwindcss/typography to package.json
+  - Modified astro.config.mjs (temporarily disabled sitemap for empty collections)
+- **Learnings:**
+  - Astro sitemap integration fails on empty content collections; disable or add sample content first
+  - JSON-LD script tags need `is:inline` directive to avoid Astro processing warnings
+  - BaseLayout uses `<slot />` pattern for content insertion
+  - ArticleLayout calculates reading time and word count from article.body
+  - Astro Content Collections require at least one valid entry or build will warn
+  - Typography plugin configuration lives in tailwind.config.mjs extended theme
+
