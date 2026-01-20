@@ -116,3 +116,22 @@ Started: 2026-01-20
   - Content includes code blocks, lists, links, and demonstrates markdown rendering
   - Article explains agent-native design concept and Lab's technical architecture
 
+## 2026-01-21 - LAB-007
+- Implemented JSON API endpoint for articles
+- Files changed:
+  - Created src/pages/api/articles.json.ts
+- **Learnings:**
+  - Astro API routes: Export async GET function from .json.ts files
+  - getCollection('articles') returns all articles from content collection
+  - Filter articles by status: .filter(article => article.data.status === 'published')
+  - Sort by date descending: .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  - Content summary: Remove frontmatter, collapse spaces, take first 200 chars
+  - Author type needs explicit union: type Author = { name: string; type: 'human' | 'ai' }
+  - Default action URLs generated if not in frontmatter using encodeURIComponent
+  - JSON response includes meta object with total, generated timestamp, version
+  - Cache-Control header: 'max-age=3600' for 1 hour caching
+  - Reading time: Math.ceil(words / 200) assumes 200 words per minute
+  - Word count: article.body.split(/\s+/).length
+  - Response uses JSON.stringify with null, 2 for pretty formatting
+  - Build generates static JSON file at dist/api/articles.json
+  - API endpoint includes comprehensive metadata: taxonomy, authors, actions, machine context, SEO
