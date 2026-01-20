@@ -80,3 +80,21 @@ Started: 2026-01-20
   - Use `data-*` attributes to pass dynamic data to client-side scripts
   - Group related actions in sections with headings for better UX
 
+## 2026-01-20 - LAB-005
+- Implemented dynamic article page template
+- Files changed:
+  - Created src/pages/articles/[...slug].astro
+- **Learnings:**
+  - Dynamic routes in Astro use `getStaticPaths()` to generate pages at build time
+  - `[...slug]` syntax captures full path (e.g., "2026/01/article-name")
+  - `getCollection('articles')` returns all articles from content collection
+  - `article.render()` returns `Content` component for rendering markdown
+  - Conditional rendering with `{condition && (jsx)}` for optional components
+  - ArticleLayout already handles SEO metadata via BaseLayout, just pass article prop
+  - Reading time calculated as: `Math.ceil(words / 200)` (200 words per minute)
+  - Word count from: `article.body.split(/\s+/).length`
+  - CoAuthorBadge only shown when `article.data.coauthored === true`
+  - AgentActions needs absolute URL for article, constructed from siteUrl + slug
+  - Empty content collections cause build warnings but don't fail the build
+  - All acceptance criteria met: typecheck passes, build passes, all components integrated
+
