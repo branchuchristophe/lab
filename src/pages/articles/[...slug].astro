@@ -1,0 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import CoAuthorBadge from '../../components/CoAuthorBadge.astro';
+import AgentActions from '../../components/AgentActions.astro';
+
+// Generate static paths for all articles
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await article.render();
+
+// Site URL for absolute URLs
+const siteUrl = 'https://lab.example.com';
+const articleUrl = `${siteUrl}/articles/${article.slug}`;
+
+// Calculate reading time and word count
+const words = article.body.split(/\s+/).length;
+const readingTime = Math.ceil(words / 200);
+---
+
+<ArticleLayout article={article}>
+  <!-- Co-author badge (shown when coauthored) -->
+  {article.data.coauthored && (
+    <div class="mb-8">
+      <CoAuthorBadge
+        author={article.data.author}
+        aiContributors={article.data.aiContributors}
+        coauthorNote={article.data.coauthorNote}
+        validationLevel={article.data.validationLevel}
+        coauthored={article.data.coauthored}
+      />
+    </div>
+  )}
+
+  <!-- Article content (markdown rendered) -->
+  <Content />
+
+  <!-- Agent actions (read with AI, share) -->
+  <AgentActions
+    title={article.data.title}
+    description={article.data.description}
+    articleUrl={articleUrl}
+    claudeUrl={article.data.claudeUrl}
+    chatgptUrl={article.data.chatgptUrl}
+    githubUrl={article.data.githubUrl}
+    notebookUrl={article.data.notebookUrl}
+  />
+
+  <!-- Reading stats footer -->
+  <div class="mt-12 pt-8 border-t border-neutral-800">
+    <div class="flex items-center justify-between text-sm text-neutral-500">
+      <div class="flex items-center gap-4">
+        <span>{readingTime} min read</span>
+        <span>·</span>
+        <span>{words} words</span>
+        {article.data.codeLanguages && article.data.codeLanguages.length > 0 && (
+          <>
+            <span>·</span>
+            <span>Languages: {article.data.codeLanguages.join(', ')}</span>
+          </>
+        )}
+      </div>
+      {article.data.lastUpdated && (
+        <time datetime={article.data.lastUpdated.toISOString()}>
+          Updated {article.data.lastUpdated.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+          })}
+        </time>
+      )}
+    </div>
+  </div>
+</ArticleLayout>
