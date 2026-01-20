@@ -98,3 +98,21 @@ Started: 2026-01-20
   - Empty content collections cause build warnings but don't fail the build
   - All acceptance criteria met: typecheck passes, build passes, all components integrated
 
+## 2026-01-20 - LAB-006
+- Implemented sample article "Welcome to Lab"
+- Files changed:
+  - Created src/content/articles/2026/01/welcome-to-lab.md
+- **Learnings:**
+  - Sample article demonstrates all Lab features: co-authorship, validation markers, agent actions
+  - Frontmatter includes all required fields: title, description, publishedAt, topic, status
+  - Co-authorship fields: coauthored: true, aiContributors: ["Claude Sonnet 4.5"], coauthorNote
+  - Validation level set to "tested" for proven concepts
+  - Agent action URLs use query parameters with encoded content for pre-filled conversations
+  - Machine context fields (purpose, prerequisites, outputs, codeLanguages) help AI understand content
+  - Inline validation markers `<Validated />` and `<Experimental />` indicate content confidence
+  - Featured: true makes article appear prominently on homepage
+  - Schema validation passes at build time - Zod catches invalid frontmatter immediately
+  - Article builds successfully and generates static page at /articles/2026/01/welcome-to-lab/
+  - Content includes code blocks, lists, links, and demonstrates markdown rendering
+  - Article explains agent-native design concept and Lab's technical architecture
+

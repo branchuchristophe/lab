@@ -97,7 +97,7 @@
         "npm run build passes"
       ],
       "priority": 6,
-      "passes": false,
+      "passes": true,
       "blockedBy": ["LAB-005"],
       "notes": "Test content"
     },
