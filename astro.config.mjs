@@ -7,7 +7,8 @@ export default defineConfig({
   site: 'https://lab.example.com', // Update with actual domain
   integrations: [
     tailwind(),
-    sitemap(),
+    // Temporarily disabled until we have content
+    // sitemap(),
   ],
   output: 'static',
   build: {

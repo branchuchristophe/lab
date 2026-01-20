@@ -1,0 +1,130 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+}
+
+const { article } = Astro.props;
+const { data } = article;
+
+// Generate canonical URL
+const siteUrl = 'https://lab.example.com';
+const canonical = data.canonical || `${siteUrl}/articles/${article.slug}`;
+
+// Calculate reading time if not provided
+const readingTime = data.readingTime || Math.ceil(article.body.split(/\s+/).length / 200);
+const wordCount = data.wordCount || article.body.split(/\s+/).length;
+---
+
+<BaseLayout
+  title={`${data.title} - Lab`}
+  description={data.description}
+  canonical={canonical}
+  image={data.image}
+  noindex={data.noindex}
+  schemaType={data.schemaType}
+>
+  <article class="max-w-3xl mx-auto px-4 py-12">
+    <!-- Article header -->
+    <header class="mb-8">
+      <div class="text-sm text-neutral-500 mb-4 flex items-center gap-4">
+        <time datetime={data.publishedAt.toISOString()}>
+          {data.publishedAt.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })}
+        </time>
+        <span>·</span>
+        <span>{readingTime} min read</span>
+        <span>·</span>
+        <span>{wordCount} words</span>
+      </div>
+
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">
+        {data.title}
+      </h1>
+
+      <p class="text-xl text-neutral-400 mb-6">
+        {data.description}
+      </p>
+
+      <!-- Topic badge -->
+      <div class="flex items-center gap-2">
+        <a
+          href={`/topics/${data.topic}`}
+          class="inline-flex items-center px-3 py-1 rounded-full bg-primary-500/10 text-primary-500 text-sm font-medium hover:bg-primary-500/20 transition-colors"
+        >
+          {data.topic}
+        </a>
+        {data.tags.map((tag) => (
+          <span class="text-sm text-neutral-500">#{tag}</span>
+        ))}
+      </div>
+    </header>
+
+    <!-- Article content -->
+    <div class="prose prose-invert prose-neutral prose-lg max-w-none">
+      <slot />
+    </div>
+
+    <!-- Article footer with metadata -->
+    <footer class="mt-12 pt-8 border-t border-neutral-800">
+      <div class="text-sm text-neutral-500">
+        {data.lastUpdated && (
+          <p class="mb-2">
+            Last updated: {data.lastUpdated.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}
+          </p>
+        )}
+        <p>Version {data.version}</p>
+      </div>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style is:global>
+  /* Prose styling for markdown content */
+  .prose {
+    --tw-prose-body: theme('colors.neutral.300');
+    --tw-prose-headings: theme('colors.neutral.100');
+    --tw-prose-links: theme('colors.primary.500');
+    --tw-prose-bold: theme('colors.neutral.100');
+    --tw-prose-code: theme('colors.primary.400');
+    --tw-prose-pre-bg: theme('colors.neutral.900');
+    --tw-prose-quotes: theme('colors.neutral.400');
+  }
+
+  .prose a {
+    text-decoration: underline;
+    text-decoration-color: theme('colors.primary.500/30');
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.2s;
+  }
+
+  .prose a:hover {
+    text-decoration-color: theme('colors.primary.500');
+  }
+
+  .prose code {
+    background-color: theme('colors.neutral.900');
+    padding: 0.2em 0.4em;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+  }
+
+  .prose pre {
+    background-color: theme('colors.neutral.900') !important;
+    border: 1px solid theme('colors.neutral.800');
+  }
+
+  .prose pre code {
+    background-color: transparent;
+    padding: 0;
+  }
+</style>
