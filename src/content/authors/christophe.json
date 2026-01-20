@@ -1,0 +1,11 @@
+{
+  "id": "christophe",
+  "name": "Christophe",
+  "type": "human",
+  "bio": "Building systems that compound. AI + automation enthusiast.",
+  "avatar": "/images/authors/christophe.jpg",
+  "links": {
+    "twitter": "https://x.com/christophe",
+    "github": "https://github.com/christophe"
+  }
+}

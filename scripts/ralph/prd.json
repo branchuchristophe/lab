@@ -1,0 +1,168 @@
+{
+  "projectName": "Lab Blog - Phase 1: Core Workflow",
+  "branchName": "ralph/phase-1-core",
+  "userStories": [
+    {
+      "id": "LAB-001",
+      "title": "Basic Astro page structure",
+      "description": "Create home page, article listing, and basic layout components",
+      "acceptanceCriteria": [
+        "src/pages/index.astro renders home page with title",
+        "src/layouts/BaseLayout.astro includes SEO head component",
+        "src/layouts/ArticleLayout.astro extends BaseLayout",
+        "npm run build passes without errors",
+        "npm run typecheck passes"
+      ],
+      "priority": 1,
+      "passes": false,
+      "blockedBy": [],
+      "notes": "Foundation for all pages"
+    },
+    {
+      "id": "LAB-002",
+      "title": "SEO head component",
+      "description": "Create SEOHead component with meta tags, Open Graph, Twitter Card, and JSON-LD schema",
+      "acceptanceCriteria": [
+        "src/components/SEOHead.astro renders title, description, canonical",
+        "Open Graph tags (og:title, og:description, og:image, og:url) present",
+        "Twitter Card tags present",
+        "JSON-LD Article schema included",
+        "npm run typecheck passes"
+      ],
+      "priority": 2,
+      "passes": false,
+      "blockedBy": ["LAB-001"],
+      "notes": "Critical for SEO"
+    },
+    {
+      "id": "LAB-003",
+      "title": "Co-author badge component",
+      "description": "Create CoAuthorBadge component showing human + AI authors with validation level",
+      "acceptanceCriteria": [
+        "src/components/CoAuthorBadge.astro renders author names and types",
+        "Shows validation badge (experimental/tested/production)",
+        "Displays transparency callout when coauthored=true",
+        "Styled with Tailwind CSS",
+        "npm run typecheck passes"
+      ],
+      "priority": 3,
+      "passes": false,
+      "blockedBy": ["LAB-001"],
+      "notes": "AI transparency feature"
+    },
+    {
+      "id": "LAB-004",
+      "title": "Agent actions component",
+      "description": "Create AgentActions component with Read with Claude/ChatGPT buttons and sharing",
+      "acceptanceCriteria": [
+        "src/components/AgentActions.astro renders action buttons",
+        "Claude URL generates correctly with article context",
+        "ChatGPT URL generates correctly",
+        "GitHub link shown if githubUrl provided",
+        "Share buttons for X, LinkedIn, Copy link included",
+        "npm run typecheck passes"
+      ],
+      "priority": 4,
+      "passes": false,
+      "blockedBy": ["LAB-001"],
+      "notes": "Agent-native actions"
+    },
+    {
+      "id": "LAB-005",
+      "title": "Article page template",
+      "description": "Create dynamic article page that renders markdown content with all components",
+      "acceptanceCriteria": [
+        "src/pages/articles/[...slug].astro renders article content",
+        "Includes SEOHead with article metadata",
+        "Includes CoAuthorBadge when coauthored",
+        "Includes AgentActions",
+        "Shows reading time and word count",
+        "npm run build passes",
+        "npm run typecheck passes"
+      ],
+      "priority": 5,
+      "passes": false,
+      "blockedBy": ["LAB-002", "LAB-003", "LAB-004"],
+      "notes": "Main article view"
+    },
+    {
+      "id": "LAB-006",
+      "title": "Sample article content",
+      "description": "Create a sample article demonstrating all features",
+      "acceptanceCriteria": [
+        "src/content/articles/2026/01/welcome-to-lab.md exists",
+        "Frontmatter validates against schema",
+        "Includes coauthored: true with Claude as contributor",
+        "Uses validation markers in content",
+        "npm run build passes"
+      ],
+      "priority": 6,
+      "passes": false,
+      "blockedBy": ["LAB-005"],
+      "notes": "Test content"
+    },
+    {
+      "id": "LAB-007",
+      "title": "JSON API endpoint for articles",
+      "description": "Create /api/articles.json endpoint returning article index",
+      "acceptanceCriteria": [
+        "src/pages/api/articles.json.ts exports GET function",
+        "Returns JSON with articles array",
+        "Each article has: slug, url, title, description, date, authors, content summary",
+        "Includes actions URLs (claudeUrl, chatgptUrl)",
+        "npm run build passes"
+      ],
+      "priority": 7,
+      "passes": false,
+      "blockedBy": ["LAB-006"],
+      "notes": "Agent-friendly API"
+    },
+    {
+      "id": "LAB-008",
+      "title": "RSS feed",
+      "description": "Create RSS feed at /feed/rss.xml",
+      "acceptanceCriteria": [
+        "src/pages/feed/rss.xml.ts exports GET function",
+        "Valid RSS 2.0 XML output",
+        "Includes all published articles",
+        "npm run build passes"
+      ],
+      "priority": 8,
+      "passes": false,
+      "blockedBy": ["LAB-006"],
+      "notes": "Syndication feed"
+    },
+    {
+      "id": "LAB-009",
+      "title": "Topic hub pages",
+      "description": "Create topic listing pages with SEO optimization",
+      "acceptanceCriteria": [
+        "src/pages/topics/[topic].astro renders topic page",
+        "Lists all articles for that topic",
+        "Includes topic description and SEO metadata",
+        "npm run build passes"
+      ],
+      "priority": 9,
+      "passes": false,
+      "blockedBy": ["LAB-006"],
+      "notes": "Topic organization"
+    },
+    {
+      "id": "LAB-010",
+      "title": "Home page with recent articles",
+      "description": "Update home page to show recent articles and featured content",
+      "acceptanceCriteria": [
+        "Home page lists 5 most recent articles",
+        "Shows featured articles section",
+        "Includes topic navigation",
+        "Links to RSS feed",
+        "npm run build passes",
+        "npm run typecheck passes"
+      ],
+      "priority": 10,
+      "passes": false,
+      "blockedBy": ["LAB-006", "LAB-009"],
+      "notes": "Homepage completion"
+    }
+  ]
+}

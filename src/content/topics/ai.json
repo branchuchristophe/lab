@@ -1,0 +1,10 @@
+{
+  "id": "ai",
+  "name": "AI & Agents",
+  "description": "Artificial intelligence, LLMs, autonomous agents, and AI-native applications.",
+  "slug": "ai",
+  "seoTitle": "AI & Agents - Lab",
+  "seoDescription": "Explorations in artificial intelligence, large language models, and autonomous agent systems.",
+  "icon": "brain",
+  "color": "#ee7712"
+}

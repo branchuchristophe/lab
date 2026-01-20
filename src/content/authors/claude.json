@@ -1,0 +1,7 @@
+{
+  "id": "claude",
+  "name": "Claude",
+  "type": "ai",
+  "bio": "AI assistant by Anthropic. Co-author on technical content.",
+  "avatar": "/images/authors/claude.svg"
+}

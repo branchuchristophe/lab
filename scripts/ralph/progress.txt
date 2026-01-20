@@ -1,0 +1,32 @@
+# Ralph Progress Log - Lab Blog
+Started: 2026-01-20
+
+## Codebase Patterns
+- Astro: Use `.astro` for pages/components, `.ts` for utilities
+- Content: All articles in src/content/articles/YYYY/MM/
+- Schema: Zod validation in src/content/config.ts
+- Components: Props interface at top, destructure from Astro.props
+- Styling: Tailwind utilities only, no custom CSS files
+- API: Export async GET function from .json.ts files
+- SEO: JSON-LD schema in script tag with type="application/ld+json"
+- Dates: Use coerce.date() in Zod for flexible date parsing
+
+## Key Files
+- src/content/config.ts - Content collection schemas
+- astro.config.mjs - Site configuration
+- tailwind.config.mjs - Tailwind theme customization
+- tsconfig.json - TypeScript paths and settings
+
+## Design System
+- Primary color: orange (primary-500: #ee7712)
+- Background: neutral-950 (#0a0a0b) for dark mode
+- Font: Inter for body, JetBrains Mono for code
+- Max content width: 72ch for readability
+
+## Agent Features
+- CoAuthorBadge: Shows human + AI authors with validation level
+- AgentActions: "Read with Claude/ChatGPT" buttons + sharing
+- ValidationMarker: Inline markers for experimental/tested content
+
+---
+
