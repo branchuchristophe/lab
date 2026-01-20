@@ -171,3 +171,19 @@ Started: 2026-01-20
   - Filter articles by topic.data.id (not topic.data.slug) to match article schema
   - Build successfully generates 5 static topic hub pages
   - All acceptance criteria met: renders topic page, lists articles, includes SEO, build passes
+
+## 2026-01-21 - LAB-010
+- Completed home page with recent articles and featured content
+- Files changed:
+  - Modified src/pages/index.astro
+- **Learnings:**
+  - Home page already had recent articles (5 most recent, sliced)
+  - Added featured articles section using .filter(article => article.data.featured)
+  - Featured section displays max 3 articles in a grid layout
+  - Featured articles have special styling: border-2 border-primary-500/20 bg-primary-500/5
+  - Conditional rendering: {featuredArticles.length > 0 && (...)} prevents empty section
+  - Topic navigation added via topic cards with emoji icons and color coding
+  - getCollection('topics') loads all topic metadata from JSON files
+  - Icon mapping: Record<string, string> type for icon to emoji conversion
+  - RSS feed link prominently displayed in hero section CTA
+  - All acceptance criteria met: 5 recent articles, featured section, topic nav, RSS link, builds pass
