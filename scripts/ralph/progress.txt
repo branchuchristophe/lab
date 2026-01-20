@@ -65,3 +65,18 @@ Started: 2026-01-20
   - Validation levels have config object for easy maintenance
   - Transparency callout only appears when coauthored=true
 
+## 2026-01-20 - LAB-004
+- Implemented AgentActions component with AI reading and sharing buttons
+- Files changed:
+  - Created src/components/AgentActions.astro
+- **Learnings:**
+  - Generate default Claude/ChatGPT URLs with article context if not provided in frontmatter
+  - Use `encodeURIComponent()` for all URL parameters to handle special characters
+  - Script tags in Astro components work for client-side interactivity (copy button)
+  - Conditional rendering of optional buttons (GitHub, Notebook) with `{url && (...)}`
+  - Share URLs: X uses `x.com/intent/tweet`, LinkedIn uses `linkedin.com/sharing/share-offsite`
+  - Client-side clipboard API with `navigator.clipboard.writeText()` for copy functionality
+  - Button feedback pattern: change text temporarily with setTimeout for visual confirmation
+  - Use `data-*` attributes to pass dynamic data to client-side scripts
+  - Group related actions in sections with headings for better UX
+

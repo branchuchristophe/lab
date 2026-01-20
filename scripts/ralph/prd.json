@@ -63,7 +63,7 @@
         "npm run typecheck passes"
       ],
       "priority": 4,
-      "passes": false,
+      "passes": true,
       "blockedBy": ["LAB-001"],
       "notes": "Agent-native actions"
     },
