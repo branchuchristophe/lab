@@ -153,3 +153,21 @@ Started: 2026-01-20
   - RSS feed generates as static file at dist/feed/rss.xml during build
   - Feed includes summary (first 500 chars) rather than full article body
   - All acceptance criteria met: valid RSS 2.0, includes published articles, build passes
+## 2026-01-21 - LAB-009
+- Implemented topic hub pages using topics content collection
+- Files changed:
+  - Created src/content/topics/automation.json
+  - Created src/content/topics/engineering.json
+  - Created src/content/topics/experiments.json
+  - Created src/content/topics/personal.json
+  - Created src/pages/topics/[topic].astro
+- **Learnings:**
+  - Topic pages should use getCollection('topics') not hardcoded metadata
+  - getStaticPaths() can return data from multiple collections (topics + articles)
+  - Topic metadata stored in JSON files with id, name, description, slug, seoTitle, seoDescription, icon, color
+  - Icon rendering uses emoji unicode characters (🧠, ⚙️, 🧪, 💻, 👤)
+  - Inline styles with template literals for dynamic colors: `style="background-color: ${color}20; color: ${color}"`
+  - SEOHead component uses schemaType prop, not ogType
+  - Filter articles by topic.data.id (not topic.data.slug) to match article schema
+  - Build successfully generates 5 static topic hub pages
+  - All acceptance criteria met: renders topic page, lists articles, includes SEO, build passes
