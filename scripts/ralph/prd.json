@@ -128,7 +128,7 @@
         "npm run build passes"
       ],
       "priority": 8,
-      "passes": false,
+      "passes": true,
       "blockedBy": ["LAB-006"],
       "notes": "Syndication feed"
     },

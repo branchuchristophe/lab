@@ -135,3 +135,21 @@ Started: 2026-01-20
   - Response uses JSON.stringify with null, 2 for pretty formatting
   - Build generates static JSON file at dist/api/articles.json
   - API endpoint includes comprehensive metadata: taxonomy, authors, actions, machine context, SEO
+
+## 2026-01-21 - LAB-008
+- Implemented RSS feed at /feed/rss.xml
+- Files changed:
+  - Created src/pages/feed/rss.xml.ts
+- **Learnings:**
+  - RSS 2.0 XML format requires proper namespace declarations (xmlns:atom for atom:link)
+  - escapeXml() function needed to handle XML special characters (&, <, >, ", ')
+  - atom:link with rel="self" is best practice for feed discovery
+  - RSS items use <category> tags for both topic and tags
+  - Author field can include AI co-authors in parentheses for transparency
+  - pubDate uses .toUTCString() for RFC 822 format (RSS standard)
+  - lastBuildDate set to current time for feed freshness indication
+  - guid with isPermaLink="true" uses article URL as unique identifier
+  - Content-Type header must be 'application/xml; charset=utf-8' not 'text/xml'
+  - RSS feed generates as static file at dist/feed/rss.xml during build
+  - Feed includes summary (first 500 chars) rather than full article body
+  - All acceptance criteria met: valid RSS 2.0, includes published articles, build passes
