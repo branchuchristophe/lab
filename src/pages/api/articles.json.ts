@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { SITE_URL } from '../../lib/constants';
 
 // Author type definition
 type Author = {
@@ -32,7 +33,7 @@ export const GET: APIRoute = async () => {
     const readingTime = Math.ceil(words / 200); // 200 words per minute
 
     // Build article URL
-    const url = `https://lab.example.com/articles/${article.slug}/`;
+    const url = `${SITE_URL}/articles/${article.slug}/`;
 
     // Build authors array
     const authors: Author[] = [
@@ -58,7 +59,7 @@ export const GET: APIRoute = async () => {
     )}`;
 
     // Generate default ChatGPT URL if not provided
-    const defaultChatGPTUrl = `https://chat.openai.com/?q=${encodeURIComponent(
+    const defaultChatGPTUrl = `https://chatgpt.com/?q=${encodeURIComponent(
       `Read and discuss this article: ${article.data.title}\n\n${url}`
     )}`;
 

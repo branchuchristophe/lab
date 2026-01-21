@@ -53,7 +53,7 @@ const wordCount = data.wordCount || countWords(article.body);
         >
           {data.topic}
         </a>
-        {data.tags.map((tag) => <span class="text-sm text-neutral-500">#{tag}</span>)}
+        {data.tags?.map((tag) => <span class="text-sm text-neutral-500">#{tag}</span>)}
       </div>
     </header>
 
@@ -63,16 +63,16 @@ const wordCount = data.wordCount || countWords(article.body);
     </div>
 
     <!-- Article footer with metadata -->
-    <footer class="mt-12 pt-8 border-t border-neutral-800">
-      <div class="text-sm text-neutral-500">
-        {
-          data.lastUpdated && (
+    {(data.lastUpdated || data.version) && (
+      <footer class="mt-12 pt-8 border-t border-neutral-800">
+        <div class="text-sm text-neutral-500">
+          {data.lastUpdated && (
             <p class="mb-2">Last updated: {formatDateLong(data.lastUpdated)}</p>
-          )
-        }
-        <p>Version {data.version}</p>
-      </div>
-    </footer>
+          )}
+          {data.version && <p>Version {data.version}</p>}
+        </div>
+      </footer>
+    )}
   </article>
 </BaseLayout>
 

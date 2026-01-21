@@ -24,7 +24,8 @@ export async function getStaticPaths() {
 const { topic, topicArticles } = Astro.props;
 
 // SEO metadata
-const siteUrl = 'https://lab.lifeos.dev';
+import { SITE_URL } from '../../lib/constants';
+const siteUrl = SITE_URL;
 const title = topic.data.seoTitle || `${topic.data.name} - Lab`;
 const description = topic.data.seoDescription || topic.data.description;
 const pageUrl = `${siteUrl}/topics/${topic.data.slug}`;
@@ -102,7 +103,7 @@ const pageUrl = `${siteUrl}/topics/${topic.data.slug}`;
                     </span>
                   )}
                 </div>
-                {article.data.tags.length > 0 && (
+                {article.data.tags && article.data.tags.length > 0 && (
                   <div class="flex flex-wrap gap-2 mt-3">
                     {article.data.tags.map((tag) => (
                       <span class="text-xs px-2 py-1 bg-neutral-800 rounded text-neutral-300">

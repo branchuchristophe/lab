@@ -10,10 +10,10 @@ export const WORDS_PER_MINUTE = 200;
  */
 export const TOPIC_ICON_MAP: Record<string, string> = {
   brain: '🧠',
-  automation: '⚙️',
-  experiments: '🧪',
-  engineering: '💻',
-  personal: '👤',
+  gear: '⚙️',
+  flask: '🧪',
+  code: '💻',
+  user: '👤',
 };
 
 /**

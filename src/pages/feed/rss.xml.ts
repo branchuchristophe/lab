@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { SITE_URL } from '../../lib/constants';
 
 // Escape XML special characters
 function escapeXml(unsafe: string): string {
@@ -21,7 +22,7 @@ export const GET: APIRoute = async () => {
     .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
 
   // Site configuration
-  const siteUrl = 'https://lab.example.com';
+  const siteUrl = SITE_URL;
   const siteTitle = 'Lab - Agent-Native Blog';
   const siteDescription = 'AI & automation content for humans and machines';
 

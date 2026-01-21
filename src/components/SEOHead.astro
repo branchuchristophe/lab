@@ -20,15 +20,18 @@ const {
   schemaType = 'WebSite',
 } = Astro.props;
 
-const siteUrl = 'https://lab.example.com';
+import { SITE_URL } from '../lib/constants';
+const siteUrl = SITE_URL;
 const fullUrl = canonical || new URL(Astro.url.pathname, siteUrl).toString();
 const ogImage = image?.src || `${siteUrl}/og-default.png`;
 
 // JSON-LD structured data
+// Use 'headline' for Article types, 'name' for WebSite/others
+const isArticleType = ['Article', 'BlogPosting', 'NewsArticle'].includes(schemaType);
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': schemaType,
-  headline: title,
+  ...(isArticleType ? { headline: title } : { name: title }),
   description: description,
   url: fullUrl,
   ...(image && {
