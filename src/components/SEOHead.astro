@@ -1,0 +1,72 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  image?: {
+    src: string;
+    alt: string;
+  };
+  noindex?: boolean;
+  schemaType?: 'Article' | 'HowTo' | 'FAQPage' | 'BlogPosting' | 'WebSite';
+}
+
+const {
+  title,
+  description,
+  canonical,
+  image,
+  noindex = false,
+  schemaType = 'WebSite',
+} = Astro.props;
+
+import { SITE_URL } from '../lib/constants';
+const siteUrl = SITE_URL;
+const fullUrl = canonical || new URL(Astro.url.pathname, siteUrl).toString();
+const ogImage = image?.src || `${siteUrl}/og-default.png`;
+
+// JSON-LD structured data
+// Use 'headline' for Article types, 'name' for WebSite/others
+const isArticleType = ['Article', 'BlogPosting', 'NewsArticle'].includes(schemaType);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': schemaType,
+  ...(isArticleType ? { headline: title } : { name: title }),
+  description: description,
+  url: fullUrl,
+  ...(image && {
+    image: {
+      '@type': 'ImageObject',
+      url: ogImage,
+      alt: image.alt,
+    },
+  }),
+};
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={fullUrl} />
+
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Open Graph -->
+<meta property="og:type" content={schemaType === 'WebSite' ? 'website' : 'article'} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={fullUrl} />
+<meta property="og:image" content={ogImage} />
+{image && <meta property="og:image:alt" content={image.alt} />}
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+{image && <meta name="twitter:image:alt" content={image.alt} />}
+
+<!-- JSON-LD -->
+<script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />

@@ -1,0 +1,138 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Generate static paths for all topics
+export async function getStaticPaths() {
+  const topics = await getCollection('topics');
+  const articles = await getCollection('articles');
+
+  return topics.map((topic) => {
+    // Get published articles for this topic
+    const topicArticles = articles
+      .filter((article) => article.data.topic === topic.data.id && article.data.status === 'published')
+      .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+
+    return {
+      params: { topic: topic.data.slug },
+      props: { topic, topicArticles },
+    };
+  });
+}
+
+// Get props from getStaticPaths
+const { topic, topicArticles } = Astro.props;
+
+// SEO metadata
+import { SITE_URL } from '../../lib/constants';
+const siteUrl = SITE_URL;
+const title = topic.data.seoTitle || `${topic.data.name} - Lab`;
+const description = topic.data.seoDescription || topic.data.description;
+const pageUrl = `${siteUrl}/topics/${topic.data.slug}`;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={pageUrl}
+  schemaType="WebSite"
+>
+
+  <div class="container mx-auto px-4 py-16 max-w-4xl">
+    <!-- Topic header -->
+    <header class="mb-12">
+      <div class="flex items-center gap-4 mb-4">
+        {topic.data.icon && (
+          <div
+            class="w-12 h-12 rounded-lg flex items-center justify-center text-2xl"
+            style={`background-color: ${topic.data.color}20; color: ${topic.data.color}`}
+          >
+            {topic.data.icon === 'brain' && '🧠'}
+            {topic.data.icon === 'gear' && '⚙️'}
+            {topic.data.icon === 'flask' && '🧪'}
+            {topic.data.icon === 'code' && '💻'}
+            {topic.data.icon === 'user' && '👤'}
+          </div>
+        )}
+        <h1 class="text-4xl md:text-5xl font-bold">
+          {topic.data.name}
+        </h1>
+      </div>
+      <p class="text-xl text-neutral-300 mb-6">
+        {topic.data.description}
+      </p>
+      <div class="text-sm text-neutral-400">
+        {topicArticles.length} {topicArticles.length === 1 ? 'article' : 'articles'}
+      </div>
+    </header>
+
+    <!-- Articles list -->
+    {topicArticles.length > 0 ? (
+      <div class="space-y-8">
+        {topicArticles.map((article) => {
+          const articleUrl = `/articles/${article.slug}/`;
+          const words = article.body.split(/\s+/).length;
+          const readingTime = Math.ceil(words / 200);
+
+          return (
+            <article class="border-l-2 border-neutral-700 pl-6 hover:border-primary-500 transition-colors">
+              <a href={articleUrl} class="block group">
+                <h2 class="text-2xl font-bold mb-2 group-hover:text-primary-500 transition-colors">
+                  {article.data.title}
+                </h2>
+                <p class="text-neutral-300 mb-3">
+                  {article.data.description}
+                </p>
+                <div class="flex flex-wrap gap-4 text-sm text-neutral-400">
+                  <time datetime={article.data.publishedAt.toISOString()}>
+                    {article.data.publishedAt.toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </time>
+                  <span>{readingTime} min read</span>
+                  {article.data.coauthored && (
+                    <span class="text-primary-500">
+                      Co-authored with AI
+                    </span>
+                  )}
+                  {article.data.featured && (
+                    <span class="text-yellow-500">
+                      ⭐ Featured
+                    </span>
+                  )}
+                </div>
+                {article.data.tags && article.data.tags.length > 0 && (
+                  <div class="flex flex-wrap gap-2 mt-3">
+                    {article.data.tags.map((tag) => (
+                      <span class="text-xs px-2 py-1 bg-neutral-800 rounded text-neutral-300">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </a>
+            </article>
+          );
+        })}
+      </div>
+    ) : (
+      <div class="text-center py-12">
+        <p class="text-neutral-400 text-lg">
+          No articles in this topic yet. Check back soon!
+        </p>
+      </div>
+    )}
+
+    <!-- Back to all topics -->
+    <div class="mt-12 pt-8 border-t border-neutral-800">
+      <a
+        href="/"
+        class="text-neutral-400 hover:text-primary-500 transition-colors"
+      >
+        ← Back to all articles
+      </a>
+    </div>
+  </div>
+</BaseLayout>

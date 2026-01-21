@@ -1,0 +1,81 @@
+---
+import PersonIcon from './icons/PersonIcon.astro';
+import LightbulbIcon from './icons/LightbulbIcon.astro';
+import InfoIcon from './icons/InfoIcon.astro';
+import { VALIDATION_CONFIG, type ValidationLevel } from '../lib/constants';
+
+interface Props {
+  author: string;
+  aiContributors?: string[];
+  coauthorNote?: string;
+  validationLevel: ValidationLevel;
+  coauthored: boolean;
+}
+
+const { author, aiContributors = [], coauthorNote, validationLevel, coauthored } = Astro.props;
+
+const validation = VALIDATION_CONFIG[validationLevel];
+---
+
+<div class="border border-neutral-800 rounded-lg p-6 bg-neutral-900/50 space-y-4">
+  <!-- Author section -->
+  <div class="flex items-start gap-4">
+    <div class="flex-1">
+      <div class="text-sm text-neutral-500 mb-2">Written by</div>
+      <div class="flex flex-wrap items-center gap-2">
+        <!-- Human author -->
+        <div class="flex items-center gap-2 px-3 py-1.5 bg-neutral-800 rounded-full">
+          <PersonIcon class="w-4 h-4 text-neutral-400" />
+          <span class="text-sm font-medium text-neutral-100">{author}</span>
+          <span class="text-xs text-neutral-500">Human</span>
+        </div>
+
+        <!-- AI co-authors -->
+        {
+          coauthored &&
+            aiContributors.length > 0 && (
+              <>
+                <span class="text-neutral-600">+</span>
+                {aiContributors.map((ai) => (
+                  <div class="flex items-center gap-2 px-3 py-1.5 bg-primary-500/10 border border-primary-500/20 rounded-full">
+                    <LightbulbIcon class="w-4 h-4 text-primary-500" />
+                    <span class="text-sm font-medium text-primary-400">{ai}</span>
+                    <span class="text-xs text-primary-500/70">AI</span>
+                  </div>
+                ))}
+              </>
+            )
+        }
+      </div>
+    </div>
+
+    <!-- Validation badge -->
+    <div class={`flex items-center gap-2 px-3 py-1.5 border rounded-full ${validation.color}`}>
+      <span class="text-sm">{validation.icon}</span>
+      <span class="text-sm font-medium">{validation.label}</span>
+    </div>
+  </div>
+
+  <!-- Transparency callout -->
+  {
+    coauthored && (
+      <div class="pt-4 border-t border-neutral-800">
+        <div class="flex items-start gap-3">
+          <div class="flex-shrink-0 mt-0.5">
+            <InfoIcon class="w-5 h-5 text-primary-500" />
+          </div>
+          <div class="flex-1">
+            <div class="text-sm font-medium text-neutral-200 mb-1">AI Co-Authorship Transparency</div>
+            <p class="text-sm text-neutral-400">
+              {coauthorNote ||
+                'This article was co-authored with AI assistance. The human author maintains editorial control and validates all content.'}
+            </p>
+          </div>
+        </div>
+        <div class="mt-3 text-xs text-neutral-500">
+          <span class="font-medium">Validation:</span> {validation.description}
+        </div>
+      </div>
+    )
+  }
+</div>

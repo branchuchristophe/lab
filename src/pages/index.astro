@@ -1,0 +1,234 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import ArrowRightIcon from '../components/icons/ArrowRightIcon.astro';
+import NotebookIcon from '../components/icons/NotebookIcon.astro';
+import { TOPIC_ICON_MAP } from '../lib/constants';
+import { formatDate } from '../lib/utils';
+
+const allArticles = await getCollection('articles', ({ data }) => {
+  return data.status === 'published';
+});
+
+const recentArticles = allArticles
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 5);
+
+const featuredArticles = allArticles
+  .filter((article) => article.data.featured)
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 3);
+
+const allTopics = await getCollection('topics');
+const sortedTopics = allTopics.sort((a, b) => a.data.name.localeCompare(b.data.name));
+
+function getTopicIcon(icon?: string): string {
+  if (!icon) return '📝';
+  return TOPIC_ICON_MAP[icon] || '📝';
+}
+---
+
+<BaseLayout>
+  <div class="max-w-4xl mx-auto px-4 py-16">
+    <!-- Hero section -->
+    <section class="mb-16 text-center">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">Agent-Native Blog</h1>
+      <p class="text-xl text-neutral-400 max-w-2xl mx-auto mb-8">
+        Exploring AI, automation, and building with intelligent agents. Where humans and AI
+        collaborate to create useful content.
+      </p>
+      <div class="flex gap-4 justify-center">
+        <a
+          href="/topics/ai"
+          class="px-6 py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors"
+        >
+          Explore Topics
+        </a>
+        <a
+          href="/feed/rss.xml"
+          class="px-6 py-3 border border-neutral-700 text-neutral-300 rounded-lg font-medium hover:border-neutral-600 hover:text-neutral-100 transition-colors"
+        >
+          Subscribe RSS
+        </a>
+      </div>
+    </section>
+
+    <!-- Topic navigation -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-6">Explore by Topic</h2>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        {
+          sortedTopics.map((topic) => (
+            <a
+              href={`/topics/${topic.data.slug}`}
+              class="group border border-neutral-800 rounded-lg p-4 hover:border-primary-500/40 hover:bg-primary-500/5 transition-all text-center"
+            >
+              <div class="text-3xl mb-2" role="img" aria-label={topic.data.name}>
+                {getTopicIcon(topic.data.icon)}
+              </div>
+              <div class="text-sm font-medium text-neutral-300 group-hover:text-primary-500 transition-colors">
+                {topic.data.name}
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Featured articles -->
+    {
+      featuredArticles.length > 0 && (
+        <section class="mb-16">
+          <h2 class="text-3xl font-bold mb-8 flex items-center gap-2">
+            <span class="text-yellow-500">⭐</span>
+            Featured
+          </h2>
+          <div class="grid md:grid-cols-2 gap-6">
+            {featuredArticles.map((article) => (
+              <a
+                href={`/articles/${article.slug}`}
+                class="group border-2 border-primary-500/20 bg-primary-500/5 rounded-lg p-6 hover:border-primary-500/40 transition-all"
+              >
+                <div class="flex items-center gap-3 mb-3 text-sm text-neutral-500">
+                  <time datetime={article.data.publishedAt.toISOString()}>
+                    {formatDate(article.data.publishedAt)}
+                  </time>
+                  <span>·</span>
+                  <span class="text-primary-500">{article.data.topic}</span>
+                </div>
+                <h3 class="text-xl font-bold mb-2 group-hover:text-primary-500 transition-colors">
+                  {article.data.title}
+                </h3>
+                <p class="text-neutral-400 text-sm">{article.data.description}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Recent articles -->
+    <section>
+      <h2 class="text-3xl font-bold mb-8">Recent Articles</h2>
+
+      {
+        recentArticles.length === 0 ? (
+          <div class="text-center py-12 text-neutral-500">
+            <p>No articles published yet. Check back soon!</p>
+          </div>
+        ) : (
+          <div class="space-y-8">
+            {recentArticles.map((article) => (
+              <article class="border border-neutral-800 rounded-lg p-6 hover:border-neutral-700 transition-colors">
+                <div class="flex items-center gap-3 mb-3 text-sm text-neutral-500">
+                  <time datetime={article.data.publishedAt.toISOString()}>
+                    {formatDate(article.data.publishedAt)}
+                  </time>
+                  <span>·</span>
+                  <a
+                    href={`/topics/${article.data.topic}`}
+                    class="text-primary-500 hover:text-primary-400 transition-colors"
+                  >
+                    {article.data.topic}
+                  </a>
+                </div>
+
+                <h3 class="text-2xl font-bold mb-3">
+                  <a
+                    href={`/articles/${article.slug}`}
+                    class="hover:text-primary-500 transition-colors"
+                  >
+                    {article.data.title}
+                  </a>
+                </h3>
+
+                <p class="text-neutral-400 mb-4">{article.data.description}</p>
+
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    {article.data.coauthored && (
+                      <span class="text-xs px-2 py-1 bg-primary-500/10 text-primary-500 rounded">
+                        AI Co-authored
+                      </span>
+                    )}
+                    <span class="text-xs px-2 py-1 bg-neutral-800 text-neutral-400 rounded">
+                      {article.data.validationLevel}
+                    </span>
+                  </div>
+
+                  <a
+                    href={`/articles/${article.slug}`}
+                    class="text-primary-500 hover:text-primary-400 font-medium transition-colors flex items-center gap-1"
+                  >
+                    Read more
+                    <ArrowRightIcon />
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        )
+      }
+    </section>
+
+    <!-- Features callout -->
+    <section class="mt-16 pt-16 border-t border-neutral-800">
+      <h2 class="text-3xl font-bold mb-8 text-center">Built for Humans & Agents</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div
+            class="w-12 h-12 bg-primary-500/10 rounded-lg flex items-center justify-center mx-auto mb-4"
+          >
+            <NotebookIcon class="w-6 h-6 text-primary-500" />
+          </div>
+          <h3 class="text-xl font-bold mb-2">AI Transparency</h3>
+          <p class="text-neutral-400">Clear co-authorship badges showing human + AI collaboration</p>
+        </div>
+
+        <div class="text-center">
+          <div
+            class="w-12 h-12 bg-primary-500/10 rounded-lg flex items-center justify-center mx-auto mb-4"
+          >
+            <svg
+              class="w-6 h-6 text-primary-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Agent-Friendly APIs</h3>
+          <p class="text-neutral-400">JSON endpoints for scrapers, LLMs, and automation tools</p>
+        </div>
+
+        <div class="text-center">
+          <div
+            class="w-12 h-12 bg-primary-500/10 rounded-lg flex items-center justify-center mx-auto mb-4"
+          >
+            <svg
+              class="w-6 h-6 text-primary-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Action Links</h3>
+          <p class="text-neutral-400">
+            Read with Claude/ChatGPT buttons for interactive exploration
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

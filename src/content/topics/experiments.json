@@ -1,0 +1,10 @@
+{
+  "id": "experiments",
+  "name": "Experiments",
+  "description": "Trying new things, documenting failures and successes, and learning in public.",
+  "slug": "experiments",
+  "seoTitle": "Experiments - Lab",
+  "seoDescription": "Documentation of technical experiments, prototypes, and lessons learned from both successes and failures.",
+  "icon": "flask",
+  "color": "#8b5cf6"
+}

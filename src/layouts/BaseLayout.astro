@@ -1,0 +1,67 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  image?: {
+    src: string;
+    alt: string;
+  };
+  noindex?: boolean;
+  schemaType?: 'Article' | 'HowTo' | 'FAQPage' | 'BlogPosting' | 'WebSite';
+}
+
+const {
+  title = 'Lab - Agent-Native Blog',
+  description = 'AI-powered content about automation, experiments, and building with AI agents',
+  canonical,
+  image,
+  noindex = false,
+  schemaType = 'WebSite',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <SEOHead
+      title={title}
+      description={description}
+      canonical={canonical}
+      image={image}
+      noindex={noindex}
+      schemaType={schemaType}
+    />
+  </head>
+  <body class="bg-neutral-950 text-neutral-100 font-sans antialiased">
+    <div class="min-h-screen flex flex-col">
+      <header class="border-b border-neutral-800">
+        <nav class="max-w-6xl mx-auto px-4 py-6">
+          <div class="flex items-center justify-between">
+            <a href="/" class="text-2xl font-bold text-primary-500">Lab</a>
+            <div class="flex gap-6">
+              <a href="/topics/ai" class="text-neutral-400 hover:text-neutral-100 transition-colors">AI</a>
+              <a href="/topics/automation" class="text-neutral-400 hover:text-neutral-100 transition-colors">Automation</a>
+              <a href="/topics/experiments" class="text-neutral-400 hover:text-neutral-100 transition-colors">Experiments</a>
+              <a href="/feed/rss.xml" class="text-neutral-400 hover:text-neutral-100 transition-colors">RSS</a>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <main class="flex-1">
+        <slot />
+      </main>
+
+      <footer class="border-t border-neutral-800 mt-16">
+        <div class="max-w-6xl mx-auto px-4 py-8 text-center text-neutral-500 text-sm">
+          <p>Built with Astro. Agent-native blog powered by AI co-authorship.</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

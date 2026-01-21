@@ -30,3 +30,160 @@ Started: 2026-01-20
 
 ---
 
+## 2026-01-20 - LAB-001
+- Implemented basic Astro page structure
+- Files changed:
+  - Created src/layouts/BaseLayout.astro with header, nav, footer
+  - Created src/components/SEOHead.astro with full SEO metadata
+  - Created src/layouts/ArticleLayout.astro extending BaseLayout
+  - Created src/pages/index.astro with hero and recent articles
+  - Added @tailwindcss/typography to package.json
+  - Modified astro.config.mjs (temporarily disabled sitemap for empty collections)
+- **Learnings:**
+  - Astro sitemap integration fails on empty content collections; disable or add sample content first
+  - JSON-LD script tags need `is:inline` directive to avoid Astro processing warnings
+  - BaseLayout uses `<slot />` pattern for content insertion
+  - ArticleLayout calculates reading time and word count from article.body
+  - Astro Content Collections require at least one valid entry or build will warn
+  - Typography plugin configuration lives in tailwind.config.mjs extended theme
+
+## 2026-01-20 - LAB-002
+- SEO head component completed as part of LAB-001
+- Already included full metadata: Open Graph, Twitter Card, JSON-LD schema
+- **Learnings:**
+  - SEOHead was built correctly the first time as part of base layout
+
+## 2026-01-20 - LAB-003
+- Implemented CoAuthorBadge component
+- Files changed:
+  - Created src/components/CoAuthorBadge.astro
+- **Learnings:**
+  - SVG icons inline with Tailwind classes for consistency
+  - Used `bg-color/10` and `border-color/20` pattern for subtle colored backgrounds
+  - Conditional rendering with `{condition && (jsx)}` pattern in Astro
+  - Badge shows human icon (user) vs AI icon (lightbulb) for visual distinction
+  - Validation levels have config object for easy maintenance
+  - Transparency callout only appears when coauthored=true
+
+## 2026-01-20 - LAB-004
+- Implemented AgentActions component with AI reading and sharing buttons
+- Files changed:
+  - Created src/components/AgentActions.astro
+- **Learnings:**
+  - Generate default Claude/ChatGPT URLs with article context if not provided in frontmatter
+  - Use `encodeURIComponent()` for all URL parameters to handle special characters
+  - Script tags in Astro components work for client-side interactivity (copy button)
+  - Conditional rendering of optional buttons (GitHub, Notebook) with `{url && (...)}`
+  - Share URLs: X uses `x.com/intent/tweet`, LinkedIn uses `linkedin.com/sharing/share-offsite`
+  - Client-side clipboard API with `navigator.clipboard.writeText()` for copy functionality
+  - Button feedback pattern: change text temporarily with setTimeout for visual confirmation
+  - Use `data-*` attributes to pass dynamic data to client-side scripts
+  - Group related actions in sections with headings for better UX
+
+## 2026-01-20 - LAB-005
+- Implemented dynamic article page template
+- Files changed:
+  - Created src/pages/articles/[...slug].astro
+- **Learnings:**
+  - Dynamic routes in Astro use `getStaticPaths()` to generate pages at build time
+  - `[...slug]` syntax captures full path (e.g., "2026/01/article-name")
+  - `getCollection('articles')` returns all articles from content collection
+  - `article.render()` returns `Content` component for rendering markdown
+  - Conditional rendering with `{condition && (jsx)}` for optional components
+  - ArticleLayout already handles SEO metadata via BaseLayout, just pass article prop
+  - Reading time calculated as: `Math.ceil(words / 200)` (200 words per minute)
+  - Word count from: `article.body.split(/\s+/).length`
+  - CoAuthorBadge only shown when `article.data.coauthored === true`
+  - AgentActions needs absolute URL for article, constructed from siteUrl + slug
+  - Empty content collections cause build warnings but don't fail the build
+  - All acceptance criteria met: typecheck passes, build passes, all components integrated
+
+## 2026-01-20 - LAB-006
+- Implemented sample article "Welcome to Lab"
+- Files changed:
+  - Created src/content/articles/2026/01/welcome-to-lab.md
+- **Learnings:**
+  - Sample article demonstrates all Lab features: co-authorship, validation markers, agent actions
+  - Frontmatter includes all required fields: title, description, publishedAt, topic, status
+  - Co-authorship fields: coauthored: true, aiContributors: ["Claude Sonnet 4.5"], coauthorNote
+  - Validation level set to "tested" for proven concepts
+  - Agent action URLs use query parameters with encoded content for pre-filled conversations
+  - Machine context fields (purpose, prerequisites, outputs, codeLanguages) help AI understand content
+  - Inline validation markers `<Validated />` and `<Experimental />` indicate content confidence
+  - Featured: true makes article appear prominently on homepage
+  - Schema validation passes at build time - Zod catches invalid frontmatter immediately
+  - Article builds successfully and generates static page at /articles/2026/01/welcome-to-lab/
+  - Content includes code blocks, lists, links, and demonstrates markdown rendering
+  - Article explains agent-native design concept and Lab's technical architecture
+
+## 2026-01-21 - LAB-007
+- Implemented JSON API endpoint for articles
+- Files changed:
+  - Created src/pages/api/articles.json.ts
+- **Learnings:**
+  - Astro API routes: Export async GET function from .json.ts files
+  - getCollection('articles') returns all articles from content collection
+  - Filter articles by status: .filter(article => article.data.status === 'published')
+  - Sort by date descending: .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  - Content summary: Remove frontmatter, collapse spaces, take first 200 chars
+  - Author type needs explicit union: type Author = { name: string; type: 'human' | 'ai' }
+  - Default action URLs generated if not in frontmatter using encodeURIComponent
+  - JSON response includes meta object with total, generated timestamp, version
+  - Cache-Control header: 'max-age=3600' for 1 hour caching
+  - Reading time: Math.ceil(words / 200) assumes 200 words per minute
+  - Word count: article.body.split(/\s+/).length
+  - Response uses JSON.stringify with null, 2 for pretty formatting
+  - Build generates static JSON file at dist/api/articles.json
+  - API endpoint includes comprehensive metadata: taxonomy, authors, actions, machine context, SEO
+
+## 2026-01-21 - LAB-008
+- Implemented RSS feed at /feed/rss.xml
+- Files changed:
+  - Created src/pages/feed/rss.xml.ts
+- **Learnings:**
+  - RSS 2.0 XML format requires proper namespace declarations (xmlns:atom for atom:link)
+  - escapeXml() function needed to handle XML special characters (&, <, >, ", ')
+  - atom:link with rel="self" is best practice for feed discovery
+  - RSS items use <category> tags for both topic and tags
+  - Author field can include AI co-authors in parentheses for transparency
+  - pubDate uses .toUTCString() for RFC 822 format (RSS standard)
+  - lastBuildDate set to current time for feed freshness indication
+  - guid with isPermaLink="true" uses article URL as unique identifier
+  - Content-Type header must be 'application/xml; charset=utf-8' not 'text/xml'
+  - RSS feed generates as static file at dist/feed/rss.xml during build
+  - Feed includes summary (first 500 chars) rather than full article body
+  - All acceptance criteria met: valid RSS 2.0, includes published articles, build passes
+## 2026-01-21 - LAB-009
+- Implemented topic hub pages using topics content collection
+- Files changed:
+  - Created src/content/topics/automation.json
+  - Created src/content/topics/engineering.json
+  - Created src/content/topics/experiments.json
+  - Created src/content/topics/personal.json
+  - Created src/pages/topics/[topic].astro
+- **Learnings:**
+  - Topic pages should use getCollection('topics') not hardcoded metadata
+  - getStaticPaths() can return data from multiple collections (topics + articles)
+  - Topic metadata stored in JSON files with id, name, description, slug, seoTitle, seoDescription, icon, color
+  - Icon rendering uses emoji unicode characters (🧠, ⚙️, 🧪, 💻, 👤)
+  - Inline styles with template literals for dynamic colors: `style="background-color: ${color}20; color: ${color}"`
+  - SEOHead component uses schemaType prop, not ogType
+  - Filter articles by topic.data.id (not topic.data.slug) to match article schema
+  - Build successfully generates 5 static topic hub pages
+  - All acceptance criteria met: renders topic page, lists articles, includes SEO, build passes
+
+## 2026-01-21 - LAB-010
+- Completed home page with recent articles and featured content
+- Files changed:
+  - Modified src/pages/index.astro
+- **Learnings:**
+  - Home page already had recent articles (5 most recent, sliced)
+  - Added featured articles section using .filter(article => article.data.featured)
+  - Featured section displays max 3 articles in a grid layout
+  - Featured articles have special styling: border-2 border-primary-500/20 bg-primary-500/5
+  - Conditional rendering: {featuredArticles.length > 0 && (...)} prevents empty section
+  - Topic navigation added via topic cards with emoji icons and color coding
+  - getCollection('topics') loads all topic metadata from JSON files
+  - Icon mapping: Record<string, string> type for icon to emoji conversion
+  - RSS feed link prominently displayed in hero section CTA
+  - All acceptance criteria met: 5 recent articles, featured section, topic nav, RSS link, builds pass

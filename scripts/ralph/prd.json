@@ -14,7 +14,7 @@
         "npm run typecheck passes"
       ],
       "priority": 1,
-      "passes": false,
+      "passes": true,
       "blockedBy": [],
       "notes": "Foundation for all pages"
     },
@@ -30,9 +30,9 @@
         "npm run typecheck passes"
       ],
       "priority": 2,
-      "passes": false,
+      "passes": true,
       "blockedBy": ["LAB-001"],
-      "notes": "Critical for SEO"
+      "notes": "Critical for SEO - completed as part of LAB-001"
     },
     {
       "id": "LAB-003",
@@ -46,7 +46,7 @@
         "npm run typecheck passes"
       ],
       "priority": 3,
-      "passes": false,
+      "passes": true,
       "blockedBy": ["LAB-001"],
       "notes": "AI transparency feature"
     },
@@ -63,7 +63,7 @@
         "npm run typecheck passes"
       ],
       "priority": 4,
-      "passes": false,
+      "passes": true,
       "blockedBy": ["LAB-001"],
       "notes": "Agent-native actions"
     },
@@ -81,7 +81,7 @@
         "npm run typecheck passes"
       ],
       "priority": 5,
-      "passes": false,
+      "passes": true,
       "blockedBy": ["LAB-002", "LAB-003", "LAB-004"],
       "notes": "Main article view"
     },
@@ -97,7 +97,7 @@
         "npm run build passes"
       ],
       "priority": 6,
-      "passes": false,
+      "passes": true,
       "blockedBy": ["LAB-005"],
       "notes": "Test content"
     },
@@ -113,7 +113,7 @@
         "npm run build passes"
       ],
       "priority": 7,
-      "passes": false,
+      "passes": true,
       "blockedBy": ["LAB-006"],
       "notes": "Agent-friendly API"
     },
@@ -128,7 +128,7 @@
         "npm run build passes"
       ],
       "priority": 8,
-      "passes": false,
+      "passes": true,
       "blockedBy": ["LAB-006"],
       "notes": "Syndication feed"
     },
@@ -143,7 +143,7 @@
         "npm run build passes"
       ],
       "priority": 9,
-      "passes": false,
+      "passes": true,
       "blockedBy": ["LAB-006"],
       "notes": "Topic organization"
     },
@@ -160,7 +160,7 @@
         "npm run typecheck passes"
       ],
       "priority": 10,
-      "passes": false,
+      "passes": true,
       "blockedBy": ["LAB-006", "LAB-009"],
       "notes": "Homepage completion"
     }
