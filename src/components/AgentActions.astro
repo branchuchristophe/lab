@@ -1,10 +1,4 @@
 ---
-import ChatIcon from './icons/ChatIcon.astro';
-import GitHubIcon from './icons/GitHubIcon.astro';
-import NotebookIcon from './icons/NotebookIcon.astro';
-import XIcon from './icons/XIcon.astro';
-import LinkedInIcon from './icons/LinkedInIcon.astro';
-import CopyIcon from './icons/CopyIcon.astro';
 import {
   generateClaudeUrl,
   generateChatGPTUrl,
@@ -31,56 +25,50 @@ const xShareUrl = generateXShareUrl(title, description, articleUrl);
 const linkedInShareUrl = generateLinkedInShareUrl(articleUrl);
 ---
 
-<div class="border-t border-b border-neutral-800 py-8 my-12">
+<div class="border-t border-b border-neutral-200 dark:border-neutral-800 py-8 my-12 font-mono text-sm">
   <div class="space-y-6">
     <!-- Agent Actions Section -->
     <div>
-      <h3 class="text-lg font-semibold mb-3 text-neutral-200">Read with AI</h3>
-      <div class="flex flex-wrap gap-3">
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="text-neutral-600 dark:text-neutral-500">$</span>
+        <span class="text-neutral-600 dark:text-neutral-500">read --with</span>
         <a
           href={finalClaudeUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-primary-500/10 border border-primary-500/30 rounded-lg hover:bg-primary-500/20 hover:border-primary-500/50 transition-colors text-primary-400"
+          class="inline-flex items-center gap-1.5 px-2 py-1 bg-primary-500/10 border border-primary-500/30 rounded hover:bg-primary-500/20 transition-colors text-primary-400 no-underline"
         >
-          <ChatIcon />
-          <span>Claude</span>
+          claude
         </a>
-
         <a
           href={finalChatGPTUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/30 rounded-lg hover:bg-green-500/20 hover:border-green-500/50 transition-colors text-green-400"
+          class="inline-flex items-center gap-1.5 px-2 py-1 bg-green-500/10 border border-green-500/30 rounded hover:bg-green-500/20 transition-colors text-green-400 no-underline"
         >
-          <ChatIcon />
-          <span>ChatGPT</span>
+          chatgpt
         </a>
-
         {
           githubUrl && (
             <a
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 px-4 py-2 bg-neutral-800/50 border border-neutral-700 rounded-lg hover:bg-neutral-800 hover:border-neutral-600 transition-colors text-neutral-300"
+              class="inline-flex items-center gap-1.5 px-2 py-1 bg-neutral-100 dark:bg-neutral-800/50 border border-neutral-300 dark:border-neutral-700 rounded hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors text-neutral-700 dark:text-neutral-300 no-underline"
             >
-              <GitHubIcon />
-              <span>View Code</span>
+              code
             </a>
           )
         }
-
         {
           notebookUrl && (
             <a
               href={notebookUrl}
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-lg hover:bg-blue-500/20 hover:border-blue-500/50 transition-colors text-blue-400"
+              class="inline-flex items-center gap-1.5 px-2 py-1 bg-blue-500/10 border border-blue-500/30 rounded hover:bg-blue-500/20 transition-colors text-blue-400 no-underline"
             >
-              <NotebookIcon />
-              <span>Notebook</span>
+              notebook
             </a>
           )
         }
@@ -89,35 +77,31 @@ const linkedInShareUrl = generateLinkedInShareUrl(articleUrl);
 
     <!-- Share Section -->
     <div>
-      <h3 class="text-lg font-semibold mb-3 text-neutral-200">Share</h3>
-      <div class="flex flex-wrap gap-3">
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="text-neutral-600 dark:text-neutral-500">$</span>
+        <span class="text-neutral-600 dark:text-neutral-500">share --to</span>
         <a
           href={xShareUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-neutral-800/50 border border-neutral-700 rounded-lg hover:bg-neutral-800 hover:border-neutral-600 transition-colors text-neutral-300"
+          class="inline-flex items-center gap-1.5 px-2 py-1 bg-neutral-100 dark:bg-neutral-800/50 border border-neutral-300 dark:border-neutral-700 rounded hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors text-neutral-700 dark:text-neutral-300 no-underline"
         >
-          <XIcon />
-          <span>X</span>
+          x
         </a>
-
         <a
           href={linkedInShareUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-neutral-800/50 border border-neutral-700 rounded-lg hover:bg-neutral-800 hover:border-neutral-600 transition-colors text-neutral-300"
+          class="inline-flex items-center gap-1.5 px-2 py-1 bg-neutral-100 dark:bg-neutral-800/50 border border-neutral-300 dark:border-neutral-700 rounded hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors text-neutral-700 dark:text-neutral-300 no-underline"
         >
-          <LinkedInIcon />
-          <span>LinkedIn</span>
+          linkedin
         </a>
-
         <button
           id="copy-link-btn"
           data-url={articleUrl}
-          class="inline-flex items-center gap-2 px-4 py-2 bg-neutral-800/50 border border-neutral-700 rounded-lg hover:bg-neutral-800 hover:border-neutral-600 transition-colors text-neutral-300"
+          class="inline-flex items-center gap-1.5 px-2 py-1 bg-neutral-100 dark:bg-neutral-800/50 border border-neutral-300 dark:border-neutral-700 rounded hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors text-neutral-700 dark:text-neutral-300"
         >
-          <CopyIcon />
-          <span>Copy Link</span>
+          copy
         </button>
       </div>
     </div>
