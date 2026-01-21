@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopicIcon from '../../components/icons/TopicIcon.astro';
+import StarIcon from '../../components/icons/StarIcon.astro';
 
 // Generate static paths for all topics
 export async function getStaticPaths() {
@@ -44,24 +46,20 @@ const pageUrl = `${siteUrl}/topics/${topic.data.slug}`;
       <div class="flex items-center gap-4 mb-4">
         {topic.data.icon && (
           <div
-            class="w-12 h-12 rounded-lg flex items-center justify-center text-2xl"
+            class="w-12 h-12 rounded-lg flex items-center justify-center"
             style={`background-color: ${topic.data.color}20; color: ${topic.data.color}`}
           >
-            {topic.data.icon === 'brain' && '🧠'}
-            {topic.data.icon === 'gear' && '⚙️'}
-            {topic.data.icon === 'flask' && '🧪'}
-            {topic.data.icon === 'code' && '💻'}
-            {topic.data.icon === 'user' && '👤'}
+            <TopicIcon icon={topic.data.icon} class="w-7 h-7" />
           </div>
         )}
         <h1 class="text-4xl md:text-5xl font-bold">
           {topic.data.name}
         </h1>
       </div>
-      <p class="text-xl text-neutral-300 mb-6">
+      <p class="text-xl text-neutral-600 dark:text-neutral-300 mb-6">
         {topic.data.description}
       </p>
-      <div class="text-sm text-neutral-400">
+      <div class="text-sm text-neutral-500 dark:text-neutral-400">
         {topicArticles.length} {topicArticles.length === 1 ? 'article' : 'articles'}
       </div>
     </header>
@@ -75,15 +73,15 @@ const pageUrl = `${siteUrl}/topics/${topic.data.slug}`;
           const readingTime = Math.ceil(words / 200);
 
           return (
-            <article class="border-l-2 border-neutral-700 pl-6 hover:border-primary-500 transition-colors">
+            <article class="border-l-2 border-neutral-300 dark:border-neutral-700 pl-6 hover:border-primary-500 transition-colors">
               <a href={articleUrl} class="block group">
                 <h2 class="text-2xl font-bold mb-2 group-hover:text-primary-500 transition-colors">
                   {article.data.title}
                 </h2>
-                <p class="text-neutral-300 mb-3">
+                <p class="text-neutral-600 dark:text-neutral-300 mb-3">
                   {article.data.description}
                 </p>
-                <div class="flex flex-wrap gap-4 text-sm text-neutral-400">
+                <div class="flex flex-wrap gap-4 text-sm text-neutral-500 dark:text-neutral-400">
                   <time datetime={article.data.publishedAt.toISOString()}>
                     {article.data.publishedAt.toLocaleDateString('en-US', {
                       year: 'numeric',
@@ -98,15 +96,16 @@ const pageUrl = `${siteUrl}/topics/${topic.data.slug}`;
                     </span>
                   )}
                   {article.data.featured && (
-                    <span class="text-yellow-500">
-                      ⭐ Featured
+                    <span class="text-yellow-500 flex items-center gap-1">
+                      <StarIcon class="w-4 h-4" />
+                      Featured
                     </span>
                   )}
                 </div>
                 {article.data.tags && article.data.tags.length > 0 && (
                   <div class="flex flex-wrap gap-2 mt-3">
                     {article.data.tags.map((tag) => (
-                      <span class="text-xs px-2 py-1 bg-neutral-800 rounded text-neutral-300">
+                      <span class="text-xs px-2 py-1 bg-neutral-200 dark:bg-neutral-800 rounded text-neutral-700 dark:text-neutral-300">
                         {tag}
                       </span>
                     ))}
@@ -119,17 +118,17 @@ const pageUrl = `${siteUrl}/topics/${topic.data.slug}`;
       </div>
     ) : (
       <div class="text-center py-12">
-        <p class="text-neutral-400 text-lg">
+        <p class="text-neutral-500 dark:text-neutral-400 text-lg">
           No articles in this topic yet. Check back soon!
         </p>
       </div>
     )}
 
     <!-- Back to all topics -->
-    <div class="mt-12 pt-8 border-t border-neutral-800">
+    <div class="mt-12 pt-8 border-t border-neutral-200 dark:border-neutral-800">
       <a
         href="/"
-        class="text-neutral-400 hover:text-primary-500 transition-colors"
+        class="text-neutral-500 dark:text-neutral-400 hover:text-primary-500 transition-colors"
       >
         ← Back to all articles
       </a>
