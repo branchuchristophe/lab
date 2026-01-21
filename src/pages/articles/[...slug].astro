@@ -4,8 +4,6 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import CoAuthorBadge from '../../components/CoAuthorBadge.astro';
 import AgentActions from '../../components/AgentActions.astro';
 import { getArticleUrl, calculateReadingTime, countWords, formatDate, generateClaudeUrl, generateChatGPTUrl } from '../../lib/utils';
-import ChatIcon from '../../components/icons/ChatIcon.astro';
-import GitHubIcon from '../../components/icons/GitHubIcon.astro';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles', ({ data }) => {
@@ -27,54 +25,37 @@ const readingTime = calculateReadingTime(article.body);
 ---
 
 <ArticleLayout article={article}>
-  <!-- Top action bar: Read with AI -->
-  <div class="flex flex-wrap items-center gap-3 mb-8 pb-6 border-b border-neutral-800">
-    <span class="text-sm text-neutral-500">Read with:</span>
+  <!-- Top action bar: Read with AI (terminal style) -->
+  <div class="flex flex-wrap items-center gap-3 mb-8 pb-6 border-b border-neutral-200 dark:border-neutral-800 font-mono text-sm">
+    <span class="text-neutral-600 dark:text-neutral-500">$</span>
+    <span class="text-neutral-600 dark:text-neutral-500">read --with</span>
     <a
       href={article.data.claudeUrl || generateClaudeUrl(article.data.title, articleUrl, article.data.description)}
       target="_blank"
       rel="noopener noreferrer"
-      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm bg-primary-500/10 border border-primary-500/30 rounded-md hover:bg-primary-500/20 transition-colors text-primary-400"
+      class="inline-flex items-center gap-1.5 px-2 py-1 bg-primary-500/10 border border-primary-500/30 rounded hover:bg-primary-500/20 transition-colors text-primary-400 no-underline"
     >
-      <ChatIcon class="w-4 h-4" />
-      Claude
+      claude
     </a>
     <a
       href={article.data.chatgptUrl || generateChatGPTUrl(article.data.title, articleUrl, article.data.description)}
       target="_blank"
       rel="noopener noreferrer"
-      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm bg-green-500/10 border border-green-500/30 rounded-md hover:bg-green-500/20 transition-colors text-green-400"
+      class="inline-flex items-center gap-1.5 px-2 py-1 bg-green-500/10 border border-green-500/30 rounded hover:bg-green-500/20 transition-colors text-green-400 no-underline"
     >
-      <ChatIcon class="w-4 h-4" />
-      ChatGPT
+      chatgpt
     </a>
     {article.data.githubUrl && (
       <a
         href={article.data.githubUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm bg-neutral-800/50 border border-neutral-700 rounded-md hover:bg-neutral-800 transition-colors text-neutral-300"
+        class="inline-flex items-center gap-1.5 px-2 py-1 bg-neutral-100 dark:bg-neutral-800/50 border border-neutral-300 dark:border-neutral-700 rounded hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors text-neutral-700 dark:text-neutral-300 no-underline"
       >
-        <GitHubIcon class="w-4 h-4" />
-        Code
+        code
       </a>
     )}
   </div>
-
-  <!-- Co-author badge (shown when coauthored) -->
-  {
-    article.data.coauthored && (
-      <div class="mb-8">
-        <CoAuthorBadge
-          author={article.data.author}
-          aiContributors={article.data.aiContributors}
-          coauthorNote={article.data.coauthorNote}
-          validationLevel={article.data.validationLevel}
-          coauthored={article.data.coauthored}
-        />
-      </div>
-    )
-  }
 
   <!-- Article content (markdown rendered) -->
   <Content />
@@ -90,9 +71,24 @@ const readingTime = calculateReadingTime(article.body);
     notebookUrl={article.data.notebookUrl}
   />
 
+  <!-- Co-author badge (shown when coauthored) -->
+  {
+    article.data.coauthored && (
+      <div class="mt-8 pt-8 border-t border-neutral-200 dark:border-neutral-800">
+        <CoAuthorBadge
+          author={article.data.author}
+          aiContributors={article.data.aiContributors}
+          coauthorNote={article.data.coauthorNote}
+          validationLevel={article.data.validationLevel}
+          coauthored={article.data.coauthored}
+        />
+      </div>
+    )
+  }
+
   <!-- Reading stats footer -->
-  <div class="mt-12 pt-8 border-t border-neutral-800">
-    <div class="flex items-center justify-between text-sm text-neutral-500">
+  <div class="mt-12 pt-8 border-t border-neutral-200 dark:border-neutral-800">
+    <div class="flex items-center justify-between text-sm text-neutral-600 dark:text-neutral-500">
       <div class="flex items-center gap-4">
         <span>{readingTime} min read</span>
         <span>·</span>
