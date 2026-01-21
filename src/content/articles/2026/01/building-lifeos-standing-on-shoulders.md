@@ -18,9 +18,7 @@ validationLevel: "tested"
 keywords: ["ai operating system", "claude code", "mcp servers", "personal ai", "agent automation"]
 schemaType: "Article"
 
-# Agent Actions
-claudeUrl: "https://claude.ai/new?q=How+can+I+build+a+personal+AI+operating+system+like+LifeOS?"
-chatgptUrl: "https://chat.openai.com/?q=What+tools+do+I+need+to+build+an+AI+powered+personal+assistant?"
+# Agent Actions - URLs auto-generated from article content
 githubUrl: "https://github.com/branchuchristophe/life-os"
 
 # Machine Context

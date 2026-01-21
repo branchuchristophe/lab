@@ -18,9 +18,7 @@ validationLevel: "tested"
 keywords: ["agent-native", "ai blog", "transparent ai", "astro", "web development"]
 schemaType: "Article"
 
-# Agent Actions
-claudeUrl: "https://claude.ai/new?q=Tell+me+about+building+agent-native+web+platforms"
-chatgptUrl: "https://chat.openai.com/?q=How+do+I+build+a+blog+that+works+for+both+humans+and+AI+agents?"
+# Agent Actions - URLs auto-generated from article content
 githubUrl: "https://github.com/lifeos-labs/lab"
 
 # Machine Context
