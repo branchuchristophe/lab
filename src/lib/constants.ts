@@ -1,7 +1,9 @@
 /**
  * Site-wide constants
  */
-export const SITE_URL = 'https://lab.example.com';
+export const SITE_URL = 'https://christophedaubert.com';
+export const SITE_NAME = "christophe d'aubert";
+export const SITE_TAGLINE = 'AI, automation, and building systems that compound';
 
 export const WORDS_PER_MINUTE = 200;
 

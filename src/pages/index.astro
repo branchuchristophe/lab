@@ -1,8 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import ArrowRightIcon from '../components/icons/ArrowRightIcon.astro';
-import NotebookIcon from '../components/icons/NotebookIcon.astro';
 import { formatDate } from '../lib/utils';
 
 const allArticles = await getCollection('articles', ({ data }) => {
@@ -12,84 +10,88 @@ const allArticles = await getCollection('articles', ({ data }) => {
 const recentArticles = allArticles
   .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
   .slice(0, 5);
-
-
 ---
 
 <BaseLayout>
-  <div class="max-w-4xl mx-auto px-4 py-16">
+  <div class="max-w-3xl mx-auto px-4 py-16">
     <!-- Hero section -->
-    <section class="mb-16 text-center">
-      <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">Agent-Native Blog</h1>
-      <p class="text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto mb-8">
-        Exploring AI, automation, and building with intelligent agents. Where humans and AI
-        collaborate to create useful content.
+    <section class="mb-16">
+      <p class="text-lg text-ink-muted dark:text-neutral-400 leading-relaxed mb-6">
+        I write about AI, automation, and building systems that compound.
+        Most of this content is co-authored with AI agents.
       </p>
-      <a
-          href="/feed/rss.xml"
-          class="px-6 py-3 border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 rounded-lg font-medium hover:border-neutral-400 dark:hover:border-neutral-600 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+      <div class="flex items-center gap-4">
+        <a
+          href="https://x.com/christophedbr"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-ink-muted dark:text-neutral-500 hover:text-ink dark:hover:text-neutral-300 transition-colors"
+          aria-label="X (Twitter)"
         >
-          Subscribe RSS
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
         </a>
+        <a
+          href="https://github.com/christophedbr"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-ink-muted dark:text-neutral-500 hover:text-ink dark:hover:text-neutral-300 transition-colors"
+          aria-label="GitHub"
+        >
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+        </a>
+        <a
+          href="/feed/rss.xml"
+          class="text-ink-muted dark:text-neutral-500 hover:text-ink dark:hover:text-neutral-300 transition-colors"
+          aria-label="RSS Feed"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 5c7.18 0 13 5.82 13 13M6 11a7 7 0 017 7m-6 0a1 1 0 11-2 0 1 1 0 012 0z"/>
+          </svg>
+        </a>
+      </div>
     </section>
 
     <!-- Recent articles -->
-    <section>
-      <h2 class="text-3xl font-bold mb-8">Recent Articles</h2>
+    <section class="mb-16">
+      <h2 class="text-sm font-medium text-ink-muted dark:text-neutral-500 uppercase tracking-wide mb-6">Writing</h2>
 
       {
         recentArticles.length === 0 ? (
-          <div class="text-center py-12 text-neutral-500">
+          <div class="py-12 text-ink-muted dark:text-neutral-500">
             <p>No articles published yet. Check back soon!</p>
           </div>
         ) : (
-          <div class="space-y-8">
+          <div class="space-y-6">
             {recentArticles.map((article) => (
-              <article class="border border-neutral-200 dark:border-neutral-800 rounded-lg p-6 hover:border-neutral-300 dark:hover:border-neutral-700 transition-colors">
-                <div class="flex items-center gap-3 mb-3 text-sm text-neutral-500">
-                  <time datetime={article.data.publishedAt.toISOString()}>
-                    {formatDate(article.data.publishedAt)}
-                  </time>
-                  <span>·</span>
-                  <a
-                    href={`/topics/${article.data.topic}`}
-                    class="text-primary-500 hover:text-primary-400 transition-colors"
-                  >
-                    {article.data.topic}
-                  </a>
-                </div>
-
-                <h3 class="text-2xl font-bold mb-3">
-                  <a
-                    href={`/articles/${article.slug}`}
-                    class="hover:text-primary-500 transition-colors"
-                  >
-                    {article.data.title}
-                  </a>
-                </h3>
-
-                <p class="text-neutral-600 dark:text-neutral-400 mb-4">{article.data.description}</p>
-
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
+              <article class="group">
+                <a href={`/articles/${article.slug}`} class="block">
+                  <div class="flex items-baseline justify-between gap-4 mb-1">
+                    <h3 class="text-lg font-medium text-ink dark:text-neutral-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                      {article.data.title}
+                    </h3>
+                    <time datetime={article.data.publishedAt.toISOString()} class="text-sm text-ink-muted dark:text-neutral-500 shrink-0">
+                      {formatDate(article.data.publishedAt)}
+                    </time>
+                  </div>
+                  <p class="text-ink-muted dark:text-neutral-400 text-sm leading-relaxed">{article.data.description}</p>
+                  <div class="flex items-center gap-2 mt-2">
                     {article.data.coauthored && (
-                      <span class="text-xs px-2 py-1 bg-primary-500/10 text-primary-500 rounded">
+                      <span class="text-xs px-2 py-0.5 bg-primary-500/10 text-primary-600 dark:text-primary-400 rounded">
                         AI Co-authored
                       </span>
                     )}
-                    <span class="text-xs px-2 py-1 bg-neutral-200 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 rounded">
-                      {article.data.validationLevel}
-                    </span>
+                    <a
+                      href={`/topics/${article.data.topic}`}
+                      class="text-xs text-ink-muted dark:text-neutral-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                    >
+                      {article.data.topic}
+                    </a>
                   </div>
-
-                  <a
-                    href={`/articles/${article.slug}`}
-                    class="text-primary-500 hover:text-primary-400 font-medium transition-colors flex items-center gap-1"
-                  >
-                    Read more
-                    <ArrowRightIcon />
-                  </a>
-                </div>
+                </a>
               </article>
             ))}
           </div>
@@ -97,64 +99,49 @@ const recentArticles = allArticles
       }
     </section>
 
-    <!-- Features callout -->
-    <section class="mt-16 pt-16 border-t border-neutral-200 dark:border-neutral-800">
-      <h2 class="text-3xl font-bold mb-8 text-center">Built for Humans & Agents</h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="text-center">
-          <div
-            class="w-12 h-12 bg-primary-500/10 rounded-lg flex items-center justify-center mx-auto mb-4"
-          >
-            <NotebookIcon class="w-6 h-6 text-primary-500" />
-          </div>
-          <h3 class="text-xl font-bold mb-2">AI Transparency</h3>
-          <p class="text-neutral-600 dark:text-neutral-400">Clear co-authorship badges showing human + AI collaboration</p>
+    <!-- Projects -->
+    <section class="mb-16">
+      <h2 class="text-sm font-medium text-ink-muted dark:text-neutral-500 uppercase tracking-wide mb-6">Projects</h2>
+      <div class="space-y-4">
+        <a href="https://github.com/branchuchristophe/savorist" target="_blank" rel="noopener noreferrer" class="block group">
+          <h3 class="text-lg font-medium text-ink dark:text-neutral-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+            Savorist
+          </h3>
+          <p class="text-ink-muted dark:text-neutral-400 text-sm">Wine discovery app with AI sommelier and label scanning</p>
+        </a>
+        <div class="block group">
+          <h3 class="text-lg font-medium text-ink dark:text-neutral-100">
+            LifeOS
+          </h3>
+          <p class="text-ink-muted dark:text-neutral-400 text-sm">Personal operating system powered by Claude AI</p>
         </div>
-
-        <div class="text-center">
-          <div
-            class="w-12 h-12 bg-primary-500/10 rounded-lg flex items-center justify-center mx-auto mb-4"
-          >
-            <svg
-              class="w-6 h-6 text-primary-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold mb-2">Agent-Friendly APIs</h3>
-          <p class="text-neutral-600 dark:text-neutral-400">JSON endpoints for scrapers, LLMs, and automation tools</p>
-        </div>
-
-        <div class="text-center">
-          <div
-            class="w-12 h-12 bg-primary-500/10 rounded-lg flex items-center justify-center mx-auto mb-4"
-          >
-            <svg
-              class="w-6 h-6 text-primary-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold mb-2">Action Links</h3>
-          <p class="text-neutral-600 dark:text-neutral-400">
-            Read with Claude/ChatGPT buttons for interactive exploration
-          </p>
-        </div>
+        <a href="https://github.com/branchuchristophe/cae-portfolio" target="_blank" rel="noopener noreferrer" class="block group">
+          <h3 class="text-lg font-medium text-ink dark:text-neutral-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+            Portfolio Builder
+          </h3>
+          <p class="text-ink-muted dark:text-neutral-400 text-sm">Create and share password-protected portfolios for design studios</p>
+        </a>
       </div>
     </section>
+
+    <!-- Companies -->
+    <section>
+      <h2 class="text-sm font-medium text-ink-muted dark:text-neutral-500 uppercase tracking-wide mb-6">Companies</h2>
+      <div class="space-y-4">
+        <a href="https://www.cae-collective.com/" target="_blank" rel="noopener noreferrer" class="block group">
+          <h3 class="text-lg font-medium text-ink dark:text-neutral-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+            CAE Collective
+          </h3>
+          <p class="text-ink-muted dark:text-neutral-400 text-sm">Collaborative design practice shaping brands beyond the beaten path</p>
+        </a>
+        <a href="https://www.hint3rland.com/" target="_blank" rel="noopener noreferrer" class="block group">
+          <h3 class="text-lg font-medium text-ink dark:text-neutral-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+            Hint3rland
+          </h3>
+          <p class="text-ink-muted dark:text-neutral-400 text-sm">R&D studio at the frontier of blockchain, AI, and extended reality</p>
+        </a>
+      </div>
+    </section>
+
   </div>
 </BaseLayout>

@@ -1,47 +1,52 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import TableOfContents from '../components/TableOfContents.astro';
 import type { CollectionEntry } from 'astro:content';
 import { SITE_URL } from '../lib/constants';
-import { calculateReadingTime, countWords, formatDateLong } from '../lib/utils';
+import { calculateReadingTime, formatDateLong } from '../lib/utils';
 
 interface Props {
   article: CollectionEntry<'articles'>;
+  headings?: Array<{ depth: number; slug: string; text: string }>;
 }
 
-const { article } = Astro.props;
+const { article, headings = [] } = Astro.props;
 const { data } = article;
 
 const canonical = data.canonical || `${SITE_URL}/articles/${article.slug}`;
 const readingTime = data.readingTime || calculateReadingTime(article.body);
-const wordCount = data.wordCount || countWords(article.body);
 ---
 
 <BaseLayout
-  title={`${data.title} - Lab`}
+  title={`${data.title} - christophe d'aubert`}
   description={data.description}
   canonical={canonical}
   image={data.image}
   noindex={data.noindex}
   schemaType={data.schemaType}
 >
-  <article class="max-w-3xl mx-auto px-4 py-12">
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <div class="lg:grid lg:grid-cols-[200px_1fr] lg:gap-12">
+      <!-- Sidebar TOC -->
+      <TableOfContents headings={headings} />
+
+      <!-- Main article -->
+      <article class="max-w-3xl">
     <!-- Article header -->
     <header class="mb-8">
-      <div class="text-sm text-neutral-600 dark:text-neutral-500 mb-4 flex items-center gap-4">
+      <div class="text-sm text-ink-muted dark:text-neutral-500 mb-4 flex items-center gap-4">
         <time datetime={data.publishedAt.toISOString()}>
           {formatDateLong(data.publishedAt)}
         </time>
         <span>·</span>
         <span>{readingTime} min read</span>
-        <span>·</span>
-        <span>{wordCount} words</span>
       </div>
 
-      <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">
+      <h1 class="text-3xl md:text-4xl font-bold mb-4 leading-tight text-ink dark:text-neutral-100">
         {data.title}
       </h1>
 
-      <p class="text-xl text-neutral-600 dark:text-neutral-400 mb-6">
+      <p class="text-lg text-ink-muted dark:text-neutral-400 mb-6">
         {data.description}
       </p>
 
@@ -49,11 +54,11 @@ const wordCount = data.wordCount || countWords(article.body);
       <div class="flex items-center gap-2">
         <a
           href={`/topics/${data.topic}`}
-          class="inline-flex items-center px-3 py-1 rounded-full bg-primary-500/10 text-primary-500 text-sm font-medium hover:bg-primary-500/20 transition-colors"
+          class="inline-flex items-center px-3 py-1 rounded-full bg-primary-500/10 text-primary-600 dark:text-primary-400 text-sm font-medium hover:bg-primary-500/20 transition-colors"
         >
           {data.topic}
         </a>
-        {data.tags?.map((tag) => <span class="text-sm text-neutral-600 dark:text-neutral-500">#{tag}</span>)}
+        {data.tags?.map((tag) => <span class="text-sm text-ink-muted dark:text-neutral-500">#{tag}</span>)}
       </div>
     </header>
 
@@ -64,8 +69,8 @@ const wordCount = data.wordCount || countWords(article.body);
 
     <!-- Article footer with metadata -->
     {(data.lastUpdated || data.version) && (
-      <footer class="mt-12 pt-8 border-t border-neutral-200 dark:border-neutral-800">
-        <div class="text-sm text-neutral-600 dark:text-neutral-500">
+      <footer class="mt-12 pt-8 border-t border-neutral-200/60 dark:border-neutral-800">
+        <div class="text-sm text-ink-muted dark:text-neutral-500">
           {data.lastUpdated && (
             <p class="mb-2">Last updated: {formatDateLong(data.lastUpdated)}</p>
           )}
@@ -73,26 +78,28 @@ const wordCount = data.wordCount || countWords(article.body);
         </div>
       </footer>
     )}
-  </article>
+      </article>
+    </div>
+  </div>
 </BaseLayout>
 
 <style is:global>
-  /* Light mode prose */
+  /* Light mode prose - warm cream background */
   .prose {
-    --tw-prose-body: theme('colors.neutral.700');
-    --tw-prose-headings: theme('colors.neutral.900');
+    --tw-prose-body: rgba(0, 0, 0, 0.75);
+    --tw-prose-headings: rgba(0, 0, 0, 0.9);
     --tw-prose-links: theme('colors.primary.600');
-    --tw-prose-bold: theme('colors.neutral.900');
-    --tw-prose-code: theme('colors.primary.600');
-    --tw-prose-pre-bg: theme('colors.neutral.100');
-    --tw-prose-quotes: theme('colors.neutral.600');
+    --tw-prose-bold: rgba(0, 0, 0, 0.9);
+    --tw-prose-code: theme('colors.primary.700');
+    --tw-prose-pre-bg: #EEEDEB;
+    --tw-prose-quotes: rgba(0, 0, 0, 0.6);
   }
 
   /* Dark mode prose */
   .dark .prose {
     --tw-prose-body: theme('colors.neutral.300');
     --tw-prose-headings: theme('colors.neutral.100');
-    --tw-prose-links: theme('colors.primary.500');
+    --tw-prose-links: theme('colors.primary.400');
     --tw-prose-bold: theme('colors.neutral.100');
     --tw-prose-code: theme('colors.primary.400');
     --tw-prose-pre-bg: theme('colors.neutral.900');
@@ -111,7 +118,7 @@ const wordCount = data.wordCount || countWords(article.body);
   }
 
   .prose code {
-    background-color: theme('colors.neutral.100');
+    background-color: #EEEDEB;
     padding: 0.2em 0.4em;
     border-radius: 0.25rem;
     font-size: 0.875em;
@@ -122,8 +129,8 @@ const wordCount = data.wordCount || countWords(article.body);
   }
 
   .prose pre {
-    background-color: theme('colors.neutral.100') !important;
-    border: 1px solid theme('colors.neutral.200');
+    background-color: #EEEDEB !important;
+    border: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   .dark .prose pre {
@@ -139,5 +146,61 @@ const wordCount = data.wordCount || countWords(article.body);
   /* Remove underline from action buttons */
   .no-underline {
     text-decoration: none !important;
+  }
+
+  /* Figure and caption styles */
+  .prose figure {
+    margin: 2rem 0;
+  }
+
+  .prose figure img,
+  .prose figure video {
+    border-radius: 0.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .dark .prose figure img,
+  .dark .prose figure video {
+    border-color: theme('colors.neutral.800');
+  }
+
+  .prose figcaption {
+    margin-top: 0.75rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  .dark .prose figcaption {
+    color: theme('colors.neutral.500');
+  }
+
+  /* Image captions via alt text pattern: ![alt](src "caption") */
+  .prose img + em,
+  .prose p:has(> img) + p > em:only-child {
+    display: block;
+    text-align: center;
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.5);
+    font-style: normal;
+    margin-top: -0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .dark .prose img + em,
+  .dark .prose p:has(> img) + p > em:only-child {
+    color: theme('colors.neutral.500');
+  }
+
+  /* Smooth scrolling for anchor navigation */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Offset for anchor links so headings don't hide at top edge */
+  .prose h2[id],
+  .prose h3[id],
+  .prose h4[id] {
+    scroll-margin-top: 2rem;
   }
 </style>

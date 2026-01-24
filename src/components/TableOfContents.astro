@@ -1,0 +1,65 @@
+---
+interface Props {
+  headings: Array<{
+    depth: number;
+    slug: string;
+    text: string;
+  }>;
+}
+
+const { headings } = Astro.props;
+
+// Filter to only h2 headings for cleaner TOC
+const tocHeadings = headings.filter(h => h.depth === 2);
+---
+
+{tocHeadings.length > 0 && (
+  <aside class="hidden lg:block">
+    <nav class="sticky top-8" aria-label="Table of contents">
+      <ul class="space-y-2 text-sm">
+        {tocHeadings.map((heading) => (
+          <li>
+            <a
+              href={`#${heading.slug}`}
+              class="text-ink-muted dark:text-neutral-500 hover:text-ink dark:hover:text-neutral-300 transition-colors block py-0.5"
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </aside>
+)}
+
+<script>
+  // Highlight current section in TOC
+  document.addEventListener('DOMContentLoaded', () => {
+    const tocLinks = document.querySelectorAll('aside nav a');
+    const headings = document.querySelectorAll('article h2[id]');
+
+    if (tocLinks.length === 0 || headings.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            tocLinks.forEach((link) => {
+              link.classList.remove('text-ink', 'dark:text-neutral-100', 'font-medium');
+              link.classList.add('text-ink-muted', 'dark:text-neutral-500');
+            });
+
+            const activeLink = document.querySelector(`aside nav a[href="#${entry.target.id}"]`);
+            if (activeLink) {
+              activeLink.classList.remove('text-ink-muted', 'dark:text-neutral-500');
+              activeLink.classList.add('text-ink', 'dark:text-neutral-100', 'font-medium');
+            }
+          }
+        });
+      },
+      { rootMargin: '-80px 0px -80% 0px' }
+    );
+
+    headings.forEach((heading) => observer.observe(heading));
+  });
+</script>

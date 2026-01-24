@@ -1,5 +1,6 @@
 ---
 import SEOHead from '../components/SEOHead.astro';
+import { SITE_NAME, SITE_TAGLINE } from '../lib/constants';
 
 interface Props {
   title?: string;
@@ -14,8 +15,8 @@ interface Props {
 }
 
 const {
-  title = 'Lab - Agent-Native Blog',
-  description = 'AI-powered content about automation, experiments, and building with AI agents',
+  title = `${SITE_NAME} - ${SITE_TAGLINE}`,
+  description = 'Personal blog on AI, automation, and building systems that compound.',
   canonical,
   image,
   noindex = false,
@@ -37,28 +38,28 @@ const {
       schemaType={schemaType}
     />
   </head>
-  <body class="bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans antialiased transition-colors">
+  <body class="bg-cream dark:bg-neutral-950 text-ink dark:text-neutral-100 font-sans antialiased transition-colors">
     <div class="min-h-screen flex flex-col">
-      <header class="border-b border-neutral-200 dark:border-neutral-800">
-        <nav class="max-w-6xl mx-auto px-4 py-6">
+      <header class="border-b border-neutral-200/60 dark:border-neutral-800">
+        <nav class="max-w-3xl mx-auto px-4 py-6">
           <div class="flex items-center justify-between">
-            <a href="/" class="text-2xl font-bold text-primary-500">Lab</a>
-            <div class="flex items-center gap-6">
-              <a href="/topics/ai" class="text-neutral-400 hover:text-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors">AI</a>
-              <a href="/topics/automation" class="text-neutral-400 hover:text-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors">Automation</a>
-              <a href="/topics/experiments" class="text-neutral-400 hover:text-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors">Experiments</a>
-              <a href="/feed/rss.xml" class="text-neutral-400 hover:text-neutral-100 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors">RSS</a>
+            <a href="/" class="text-xl font-semibold text-ink dark:text-neutral-100 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">christophe d'aubert</a>
+            <div class="flex items-center gap-5">
+              <a href="/topics/ai" class="text-ink-muted hover:text-ink dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors text-sm">AI</a>
+              <a href="/topics/automation" class="text-ink-muted hover:text-ink dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors text-sm">Automation</a>
+              <a href="/about" class="text-ink-muted hover:text-ink dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors text-sm">About</a>
+              <a href="/feed/rss.xml" class="text-ink-muted hover:text-ink dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors text-sm">RSS</a>
               <!-- Theme toggle -->
               <button
                 id="theme-toggle"
                 type="button"
-                class="p-2 rounded-lg bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors"
+                class="p-2 rounded-lg bg-cream-dark dark:bg-neutral-800 text-ink-muted dark:text-neutral-200 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
                 aria-label="Toggle dark mode"
               >
-                <svg id="theme-icon-light" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg id="theme-icon-light" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
-                <svg id="theme-icon-dark" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg id="theme-icon-dark" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                 </svg>
               </button>
@@ -71,9 +72,9 @@ const {
         <slot />
       </main>
 
-      <footer class="border-t border-neutral-200 dark:border-neutral-800 mt-16">
-        <div class="max-w-6xl mx-auto px-4 py-8 text-center text-neutral-500 text-sm">
-          <p>Built with Astro. Agent-native blog powered by AI co-authorship.</p>
+      <footer class="border-t border-neutral-200/60 dark:border-neutral-800 mt-16">
+        <div class="max-w-3xl mx-auto px-4 py-8 text-center text-ink-muted dark:text-neutral-500 text-sm">
+          <p>christophe d'aubert</p>
         </div>
       </footer>
     </div>
@@ -84,12 +85,12 @@ const {
         const html = document.documentElement;
         const theme = localStorage.getItem('theme');
 
-        // Apply saved theme or default to dark
-        if (theme === 'light') {
-          html.classList.remove('dark');
-        } else {
+        // Apply saved theme or default to light
+        if (theme === 'dark') {
           html.classList.add('dark');
-          if (!theme) localStorage.setItem('theme', 'dark');
+        } else {
+          html.classList.remove('dark');
+          if (!theme) localStorage.setItem('theme', 'light');
         }
 
         // Update icons after DOM is ready

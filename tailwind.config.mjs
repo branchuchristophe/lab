@@ -5,18 +5,28 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Custom colors for lab branding
+        // Green primary palette
         primary: {
-          50: '#fef7ee',
-          100: '#fdedd3',
-          200: '#fad7a6',
-          300: '#f6bb6e',
-          400: '#f19434',
-          500: '#ee7712', // Primary orange
-          600: '#df5d08',
-          700: '#b84509',
-          800: '#93370f',
-          900: '#772f10',
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#4ade80',
+          500: '#22c55e', // Main green
+          600: '#16a34a',
+          700: '#15803d',
+          800: '#166534',
+          900: '#14532d',
+        },
+        // Warm cream backgrounds
+        cream: {
+          DEFAULT: '#F6F5F4',
+          dark: '#EEEDEB',
+        },
+        // Text colors
+        ink: {
+          DEFAULT: 'rgba(0, 0, 0, 0.85)',
+          muted: 'rgba(0, 0, 0, 0.6)',
         },
         neutral: {
           850: '#1f1f23',

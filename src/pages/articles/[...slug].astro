@@ -17,14 +17,14 @@ export async function getStaticPaths() {
 }
 
 const { article } = Astro.props;
-const { Content } = await article.render();
+const { Content, headings } = await article.render();
 
 const articleUrl = getArticleUrl(article.slug);
 const words = countWords(article.body);
 const readingTime = calculateReadingTime(article.body);
 ---
 
-<ArticleLayout article={article}>
+<ArticleLayout article={article} headings={headings}>
   <!-- Top action bar: Read with AI (terminal style) -->
   <div class="flex flex-wrap items-center gap-3 mb-8 pb-6 border-b border-neutral-200 dark:border-neutral-800 font-mono text-sm">
     <span class="text-neutral-600 dark:text-neutral-500">$</span>
